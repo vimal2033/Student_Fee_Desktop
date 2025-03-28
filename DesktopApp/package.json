@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "cd ../Student_Fee && npm run build && cd ../DesktopApp && rmdir /s /q builder && rmdir /s /q  dist && mkdir builder && cmd /c xcopy /E /I /Y \"..\\Student_Fee\\dist\" \".\\builder\" && electron-builder",
+ "build": "cd ../Student_Fee && npm run build && cd ../DesktopApp && (if exist builder rmdir /s /q builder) && (if exist dist rmdir /s /q dist) && mkdir builder && cmd /c xcopy /E /I /Y \"..\\Student_Fee\\dist\" \".\\builder\" && electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

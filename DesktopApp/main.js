@@ -15,7 +15,7 @@ function createWindow() {
       nodeIntegration: true,
     },
     title: "",        // Set custom title
-    icon: path.join(__dirname, 'images/icons/icon.svg')  // Set custom icon
+    icon: path.join(__dirname, 'images/icons/icon.png')  // Set custom icon
   });
 
   // Remove the menu bar
