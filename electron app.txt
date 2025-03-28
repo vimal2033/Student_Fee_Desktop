@@ -1,0 +1,53 @@
+1. Build for 32-bit Architecture
+
+By default, electron-builder creates a 64-bit build. To generate a 32-bit build, modify the package.json build config.
+
+📄 package.json
+
+"build": {
+  "appId": "com.yourapp.id",
+  "productName": "YourApp",
+  "win": {
+    "target": [
+      "nsis"
+    ],
+    "arch": [
+      "ia32",   // 32-bit
+      "x64"     // 64-bit (optional)
+    ]
+  }
+}
+
+    ia32 → 32-bit build
+
+    x64 → 64-bit build
+
+✅ 2. Build Command
+
+To create the 32-bit build, run:
+-------------------------------------
+npx electron-builder --win --ia32
+------------------------------------
+
+    --win → Windows build
+
+    --ia32 → 32-bit architecture
+
+If you want to build both 32-bit and 64-bit versions together:
+-------------------------------------------
+npx electron-builder --win --ia32 --x64
+-------------------------------------------
+
+💡 How to Verify the Build
+
+After building, you should see:
+
+    A YourApp-ia32.exe → 32-bit installer
+
+    A YourApp-x64.exe → 64-bit installer (if you built for both)
+
+
+---------------------------------------------
+/E /I /Y "..\Student_Fee\dist" ".\builder"
+-------------------------------------------------
+
