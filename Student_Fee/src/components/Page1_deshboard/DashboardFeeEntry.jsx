@@ -2,16 +2,17 @@ import React,{useEffect} from 'react'
 import FeeEntryCardDeshboard from './FeeEntryCardDeshboard.jsx'
 import StudentDetailsDeshboard from './StudentDetailsDeshboard.jsx'
 import { useMyContext } from '../../global/MyContext.jsx'
+import profileImg from '/images/corporate-user-icon.png'; //import image
 
 const DashboardFeeEntry = (props) => {
   const {setInput}=useMyContext();
-
+  const profileImgUrl = new URL(profileImg, import.meta.url).href;
   useEffect(() => {
     setInput(prevState => ({ ...prevState, 
         
       Id: "",
      Name: "", 
-    ImgLink:"/images/corporate-user-icon.png",
+    ImgLink:profileImgUrl,
    Course: "",
     Phone: "",
     University: "",

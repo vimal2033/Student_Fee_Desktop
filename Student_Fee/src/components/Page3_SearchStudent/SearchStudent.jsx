@@ -2,11 +2,11 @@ import React,{useEffect} from 'react';
 import SearchInput from './SearchInput.jsx';
 import { useMyContext } from '../../global/MyContext.jsx';
 import {formatCurrency} from  '../../global/GlobalFunctions.jsx';
-
+import profileImg from '/images/corporate-user-icon.png'; //import image
 
 
 const SearchStudent = (props) => {
-
+  const profileImgUrl = new URL(profileImg, import.meta.url).href;
   const {setInput}=useMyContext();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const SearchStudent = (props) => {
         
       Id: "",
      Name: "", 
-    ImgLink:"/images/corporate-user-icon.png",
+    ImgLink:profileImgUrl,
    Course: "",
     Phone: "",
     University: "",
