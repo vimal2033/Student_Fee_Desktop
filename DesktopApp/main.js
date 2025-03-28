@@ -14,8 +14,8 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
-    title: "My App",        // Set custom title
-    icon: path.join(__dirname, 'assets/icon.png')  // Set custom icon
+    title: "",        // Set custom title
+    icon: path.join(__dirname, 'images/icons/icon.svg')  // Set custom icon
   });
 
   // Remove the menu bar
