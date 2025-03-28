@@ -1,7 +1,7 @@
 // MyContext.js
 import React, { createContext, useContext, useState } from "react";
 import {setToday} from './GlobalFunctions.jsx'; //accessing global functions
-
+import profileImg from '/images/corporate-user-icon.png'; //import image
 
 // Create Context
 const MyContext = createContext();
@@ -10,11 +10,11 @@ const MyContext = createContext();
 // Create Provider Component
 export const MyProvider = ({ children }) => {
 
- 
+  const profileImgUrl = new URL(profileImg, import.meta.url).href;
   
   const [StudentData,setStudentData]=useState([]);  //state for data of all the students
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
-  const [Input,setInput]= useState({Id:"",ImgLink:"/images/corporate-user-icon.png",Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
+  const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
   
   
 // Filter data based on name and student ID
