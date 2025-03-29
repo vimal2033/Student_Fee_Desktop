@@ -43,7 +43,7 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({sheetName: "DCA", ['STUDENT ID']: "100", NAME: name,['MOBILE NO']:phone,VILLAGE:`=CONCATENATE("${address}","")`, COURSE: course,UNIVERSITY:university,})
+    body: JSON.stringify({sheetName: course, ['STUDENT ID']: "100", NAME: name,['MOBILE NO']:phone,VILLAGE:`=CONCATENATE("${address}","")`, COURSE: course,UNIVERSITY:university,})
   })
   .then(() => {
     console.log("Data sent successfully!");

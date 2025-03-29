@@ -9,7 +9,7 @@ const TotalStudentNumber = StudentData.length;
 let TotalFeeReceived = 0;
 if (StudentData.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
-    TotalFeeReceived += StudentData[i]['FEE PAID'];
+    TotalFeeReceived =Number(TotalFeeReceived)+ Number(StudentData[i]['FEE PAID']);
   }
 } else {
    TotalFeeReceived = 0;
@@ -17,7 +17,7 @@ if (StudentData.length > 0) {
 let TotalFee = 0;
 if (StudentData.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
-    TotalFee += StudentData[i]['TOTAL FEE'];
+    TotalFee =Number(TotalFee)+ Number(StudentData[i]['TOTAL FEE']);
   }
 } else {
   TotalFee = 0;
