@@ -90,7 +90,7 @@ const AddStudent = (props) => {
               <label className="block text-sm font-medium text-gray-700 mb-1">University</label>
               <select className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm">
                 <option value="">Select University</option>
-                <option value="C.V.RAMAN">C.V. RAMAN</option>
+                <option value="C.V. RAMAN">C.V. RAMAN</option>
                 <option value="ISBM">ISBM</option>
               </select>
             </div>

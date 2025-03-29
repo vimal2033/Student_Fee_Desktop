@@ -43,7 +43,17 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({sheetName: course, ['STUDENT ID']: "100", NAME: name,['MOBILE NO']:phone,VILLAGE:`=CONCATENATE("${address}","")`, COURSE: course,UNIVERSITY:university,})
+    body: JSON.stringify({sheetName: course, ['STUDENT ID']: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
+          NAME: name,
+          ['MOBILE NO']:phone,
+          VILLAGE:`=CONCATENATE("${address}","")`, 
+          COURSE: course,
+          UNIVERSITY:`=CONCATENATE("${university}","")`,
+          ['FEE PAID']:"=SUMIF(PassBook!A:A,INDEX(DCA!A:A,ROW()),PassBook!D:D)",
+          BALANCE:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
+          
+          ['TOTAL FEE']:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"",
+      })
   })
   .then(() => {
     console.log("Data sent successfully!");
