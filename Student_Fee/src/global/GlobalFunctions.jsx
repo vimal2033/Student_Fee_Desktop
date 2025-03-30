@@ -24,7 +24,7 @@ export const setToday=()=>{
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({sheetName: "PassBook",STUDENT_ID:id, STUDENT_NAME: name, COURSE: course,FEE_RECIVED:fee,DATE:date })
+    body: JSON.stringify({ apiKey:import.meta.env.VITE_API_KEY,sheetName: "PassBook",STUDENT_ID:id, STUDENT_NAME: name, COURSE: course,FEE_RECIVED:fee,DATE:date })
 
   })
   .then(() => {
@@ -43,7 +43,7 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({sheetName: course, ['STUDENT ID']: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
+    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,sheetName: course, ['STUDENT ID']: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
           NAME: name,
           ['MOBILE NO']:phone,
           VILLAGE:`=CONCATENATE("${address}","")`, 

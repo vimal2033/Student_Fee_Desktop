@@ -1,0 +1,127 @@
+// Replace this with your actual API key
+const API_KEY = "########";
+
+function doGet(e) {
+  if (!e || e.parameter.apiKey !== API_KEY) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: 401, error: "Unauthorized - Invalid API Key" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  const ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1BL9WVnFeuT4L2M2RhFCUuziyN_L80hV3jewDP-N5kGU/edit");
+
+  function getSheetData(sheetName) {
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) return [];
+
+    const data = sheet.getRange("A1").getDataRegion().getValues();
+    const headers = data.shift();
+
+    return data.map((row) => {
+      let obj = {};
+      headers.forEach((h, i) => {
+        obj[h] = row[i];
+      });
+      return obj;
+    });
+  }
+
+  const sheet1Data = getSheetData("DCA");
+  const sheet2Data = getSheetData("PassBook");
+
+  return ContentService.createTextOutput(
+    JSON.stringify({
+      DCA: sheet1Data,
+      PassBook: sheet2Data,
+    })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+function doPost(e) {
+  try {
+    const params = JSON.parse(e.postData.contents);
+
+    // Validate API key
+    if (!params.apiKey || params.apiKey !== API_KEY) {
+      return ContentService.createTextOutput(
+        JSON.stringify({ status: 401, error: "Unauthorized - Invalid API Key" })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1BL9WVnFeuT4L2M2RhFCUuziyN_L80hV3jewDP-N5kGU/edit");
+    const bodyJSON = params;
+
+    if (!bodyJSON.sheetName) {
+      throw new Error("Missing 'sheetName' parameter in request body.");
+    }
+
+    const sheet = ss.getSheetByName(bodyJSON.sheetName);
+    if (!sheet) {
+      throw new Error(`Sheet '${bodyJSON.sheetName}' not found.`);
+    }
+
+    const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    const rowData = headers.map(h => bodyJSON[h] || "");
+
+    sheet.appendRow(rowData);
+
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: 200, message: "Data added successfully!" })
+    ).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(
+      JSON.stringify({ status: 500, error: error.toString() })
+    ).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+
+
+// ****************************************************************************
+// get request
+// const apiUrl = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?apiKey=YOUR_API_KEY";
+
+// fetch(apiUrl)
+//   .then(response => {
+//     if (!response.ok) {
+//       throw new Error(`Error: ${response.status}`);
+//     }
+//     return response.json();
+//   })
+//   .then(data => {
+//     console.log("GET Response:", data);
+//   })
+//   .catch(error => console.error("Error:", error));
+// **************************************************************************
+// post request
+// const apiUrl = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
+// const postData = {
+//   apiKey: "YOUR_API_KEY",
+//   sheetName: "DCA",
+//   "STUDENT ID": "10006",
+//   "NAME": "RAMESH",
+//   "MOBILE NO": "9876543211",
+//   "VILLAGE": "RAIPUR"
+// };
+
+// fetch(apiUrl, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json"
+//   },
+//   body: JSON.stringify(postData)
+// })
+//   .then(response => {
+//     if (!response.ok) {
+//       throw new Error(`Error: ${response.status}`);
+//     }
+//     return response.json();
+//   })
+//   .then(data => {
+//     console.log("POST Response:", data);
+//   })
+//   .catch(error => console.error("Error:", error));
+// **************************************************************************
+

@@ -28,7 +28,7 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
   
 //get student data
 async function get_student_data() {
-  const url = import.meta.env.VITE_API_URL;
+  const url = import.meta.env.VITE_API_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
 
   try {
     const response = await fetch(url, { method: "GET" });
