@@ -49,7 +49,7 @@ export const setToday=()=>{
           VILLAGE:`=CONCATENATE("${address}","")`, 
           COURSE: course,
           UNIVERSITY:`=CONCATENATE("${university}","")`,
-          ['FEE PAID']:"=SUMIF(PassBook!A:A,INDEX(DCA!A:A,ROW()),PassBook!D:D)",
+          ['FEE PAID']:"=SUMIF(PassBook!A:A,INDEX(A:A,ROW()),PassBook!D:D)",
           BALANCE:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
           
           ['TOTAL FEE']:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"",
@@ -72,3 +72,14 @@ export const formatCurrency = (amount) => {
   }).format(amount);
 }
 
+export const showPopup=()=>{
+  document.getElementById('popup').classList.add('scale-100');
+  document.getElementById('popup').classList.remove('scale-0');
+  document.getElementById('overlay').classList.remove('hidden');
+}
+
+export const hidePopup=() =>{
+  document.getElementById('popup').classList.remove('scale-100');
+  document.getElementById('popup').classList.add('scale-0');
+  document.getElementById('overlay').classList.add('hidden');
+}

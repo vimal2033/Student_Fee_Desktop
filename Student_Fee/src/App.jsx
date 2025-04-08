@@ -28,6 +28,7 @@ useEffect(()=> {
     <Router>
    
       <div className="min-h-screen flex">
+        
         {/* <div className="collapse lg:visible "> */}
         <div className="collapse lg:visible " >
           {/* <!-- side navigation bar --> */}

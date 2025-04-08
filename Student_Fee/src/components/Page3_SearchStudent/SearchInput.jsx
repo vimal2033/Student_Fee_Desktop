@@ -68,7 +68,7 @@ const autofill=(index)=>{
   }
   return (
     <>
-      <div className="relative">
+      <div>
   <input type="text" value={(props.element==="Name")?Input.Name:( (props.element==="Id")?Input.Id:"")} 
     className={`!rounded-button ${props.width} border-gray-300 border p-2 drop-shadow-sm`}
     placeholder={props.placeholder} 

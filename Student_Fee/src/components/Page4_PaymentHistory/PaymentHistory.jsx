@@ -7,7 +7,7 @@ const PaymentHistory = (props) => {
 
   useEffect(() => {
   
-    props.setTitle("Payment History"); // ✅ Updates title after mount
+    props.setTitle("Payment History"); //  Updates title after mount
   }, [props.setTitle]);
 
   
@@ -67,15 +67,7 @@ const sortedData = sortOrder === 'newest' ? paymentData.slice().reverse() : paym
               </thead>
               {/* ********************* */}
               <tbody className="bg-white divide-y divide-gray-200">
-                {/* <tr>
-                  <td className="px-3 py-4 text-sm text-gray-900">
-                    2024-02-15
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-900">
-                    John Smith
-                  </td>
-                  <td className="px-3 py-4 text-sm text-gray-900">Rs500</td>
-                </tr> */}
+               
                 {sortedData.length > 0 ? (
             sortedData.map((item, index) => (
                 <tr key={index}>

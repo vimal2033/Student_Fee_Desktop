@@ -4,6 +4,7 @@ import {submit_Payment,formatCurrency} from '../../global/GlobalFunctions.jsx';
 import InputSuggestion from './InputSuggestion.jsx';
 import AlertDismissible from '../AlertDismissible.jsx';
 import profileImg from '/images/corporate-user-icon.png'; //import image
+import Studentinfo from '../Page3_SearchStudent/Studentinfo.jsx';
 
 
 const FeeEntryCardDeshboard = (props) => {
@@ -43,6 +44,7 @@ const fillblank=()=>{
 
   return (
     <>
+    <Studentinfo/>
     <AlertDismissible />
        {/* <!-- fee entry card --> */}
     

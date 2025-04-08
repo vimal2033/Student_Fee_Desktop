@@ -3,7 +3,8 @@ import SearchInput from './SearchInput.jsx';
 import { useMyContext } from '../../global/MyContext.jsx';
 import {formatCurrency} from  '../../global/GlobalFunctions.jsx';
 import profileImg from '/images/corporate-user-icon.png'; //import image
-
+import Studentinfo from './Studentinfo.jsx';
+import { showPopup } from '../../global/GlobalFunctions'
 
 const SearchStudent = (props) => {
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
@@ -30,9 +31,13 @@ const SearchStudent = (props) => {
   const {filteredData, highlightedIndex, setHighlightedIndex} = useMyContext();
   const {Input,StudentData} = useMyContext();
 
+// const filldata=()=>{
+
+// }
+
   return (
     <>
-      
+      <Studentinfo/>
       <div className="grid grid-cols-2 gap-6">
             <div
               className="bg-white rounded-lg border border-gray-200 p-6 col-span-2"
@@ -140,11 +145,16 @@ const SearchStudent = (props) => {
                 {/* *********************************************************** */}
                   <tbody className="divide-y divide-gray-200"
                           onClick={(e)=>{
-                            // console.log(e.target.parentElement.querySelector('td').innerText)
+                            // console.log(e.target.parentElement.rowIndex);
+                            // console.log(filteredData);
                             // console.log(e.target.parentElement.querySelectorAll('td')[1].innerText)
                             
-                              setInput(prevState => ({ ...prevState,  Name:e.target.parentElement.querySelectorAll('td')[1].innerText }));
-                          }}
+                              setInput(prevState => ({ ...prevState,  Name:e.target.parentElement.querySelectorAll('td')[1].innerText,
+                                                                      //  Id:filteredData[e.target.parentElement.rowIndex]['STUDENT ID']
+                                                                      
+                               }));
+                              showPopup();
+                            }}
                   >
                     
                       {/* Display filtered data search by name */}
@@ -155,6 +165,7 @@ const SearchStudent = (props) => {
           {filteredData.slice(0, 5).map((item, index) => (
             <tr className={`cursor-pointer p-2 ${index === highlightedIndex ? 'bg-indigo-50' : ''}`} 
             key={index}
+            // onClick={()=>{ }}
             onMouseEnter={() => setHighlightedIndex(index)}
             >
               {/* -------------------------------------------------------------------------- */}
@@ -185,9 +196,9 @@ const SearchStudent = (props) => {
             {StudentData.map((item, index) => (
               <tr className={`cursor-pointer p-2 ${index === highlightedIndex ? 'bg-indigo-50' : ''}`} 
               key={index}
-              onClick={()=>{
-            //  autofill(index);
-            } }
+            //   onClick={()=>{
+            //  // autofill(index);
+            // } }
               onMouseEnter={() => setHighlightedIndex(index)}>
                 {/* -------------------------------------------------------------------------- */}
                 <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item['STUDENT ID']}</td>
@@ -227,7 +238,7 @@ const SearchStudent = (props) => {
               </div>
             </div>
           </div>
-
+          
     </>
   )
 }

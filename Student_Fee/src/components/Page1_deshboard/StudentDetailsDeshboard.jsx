@@ -1,13 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {useMyContext} from '../../global/MyContext.jsx';
 import {formatCurrency} from '../../global/GlobalFunctions.jsx';
+import { showPopup } from '../../global/GlobalFunctions.jsx';
+
+
 
 const StudentDetailsDeshboard = () => {
 
-const {Input,dropdownVisible}=useMyContext();
+const {Input,dropdownVisible,addAlert, removeAlert}=useMyContext();
 return (
     <>
+    
     {/* <!-- payment history card --> */}
     <div className="bg-white rounded-lg border border-gray-200 p-6 drop-shadow-xl h-full">
         {/* <!-- Student details heading --> */}
@@ -88,10 +91,14 @@ return (
             <tr>
                 <td>
                 <div className="mt-6  flex space-x-4">
-                  <Link to="/payment-history" exact="true" type="button" className="!rounded-button w-full bg-black cursor-pointer text-white py-2 px-4 font-medium text-sm flex items-center justify-center">
+                  <button type="button" 
+                  onClick={()=>{if(Input.Id.trim() !== ""){showPopup();}
+                                 else{ addAlert("! Please enter the student name", "bg-red-500");
+                                        setTimeout(() => { removeAlert(0); }, 3000);}}}
+                    className="!rounded-button w-full bg-black cursor-pointer text-white py-2 px-4 font-medium text-sm flex items-center justify-center">
                     <i className="fas fa-history mr-2"></i>
                     Payment History
-                  </Link>
+                  </button>
                   </div>
                 </td>
             </tr>
