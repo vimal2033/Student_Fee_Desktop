@@ -2,6 +2,7 @@ import React from 'react'
 import { useMyContext } from '../global/MyContext'
 import profileImg from '/images/corporate-user-icon.png'; //import image
 import logo from '/images/icons/icon.svg';  // Import image
+import { tableHeaders } from '../global/GlobalFunctions';
 
 const TopHeaderBar = () => {
   const {deshboardTitle}=useMyContext();
@@ -17,7 +18,7 @@ const TopHeaderBar = () => {
             <div className="px-6   block  lg:hidden">
           <span className="flex items-center">
           <img src={imageUrl} alt=" Logo"className="h-8"/>
-          <h1 className="text-xl font-semibold text-gray-900 ml-2">Logo</h1>
+          <h1 className="text-xl font-semibold text-gray-900 ml-2">{tableHeaders.Title}</h1>
           </span>
         </div>
             {/* ******************************* */}

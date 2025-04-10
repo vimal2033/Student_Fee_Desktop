@@ -1,5 +1,5 @@
 import React from 'react'
-import { hidePopup } from '../../global/GlobalFunctions'
+import { hidePopup,tableHeaders } from '../../global/GlobalFunctions'
 import { useMyContext } from '../../global/MyContext';
 import { formatCurrency } from '../../global/GlobalFunctions';
 const Studentinfo = () => {
@@ -22,16 +22,16 @@ const {filteredData,paymentData}=useMyContext();
                 
                 
                   <div className="col-span-1">
-                    <p><strong>ID:</strong> {filteredData[0]['STUDENT ID']}</p>
-                    <p><strong>Name:</strong> {filteredData[0].NAME}</p>
-                    <p><strong>Number:</strong> {filteredData['MOBILE NO']}</p>
-                    <p><strong>Course:</strong>{filteredData[0].COURSE}</p>
+                    <p><strong>ID:</strong> {filteredData[0][tableHeaders.headerId]}</p>
+                    <p><strong>Name:</strong> {filteredData[0][tableHeaders.headerName]}</p>
+                    <p><strong>Number:</strong> {filteredData[0][tableHeaders.headerPhone]}</p>
+                    <p><strong>Course:</strong>{filteredData[0][tableHeaders.headerCourse]}</p>
                   </div>
                   <div className="col-span-1">
-                    <p><strong>University:</strong> {filteredData[0].UNIVERSITY}</p>
-                    <p><strong>Total Fee:</strong> {formatCurrency(filteredData[0]['FEE PAID'])}</p>
-                    <p><strong>Fee Paid:</strong> {formatCurrency(filteredData[0]['TOTAL FEE'])}</p>
-                    <p><strong>Balance:</strong> {formatCurrency(filteredData[0].BALANCE)}</p>
+                    <p><strong>University:</strong> {filteredData[0][tableHeaders.headerUniversity]}</p>
+                    <p><strong>Total Fee:</strong> {formatCurrency(filteredData[0][tableHeaders.headerTotalFee])}</p>
+                    <p><strong>Fee Paid:</strong> {formatCurrency(filteredData[0][tableHeaders.headerFeePaid])}</p>
+                    <p><strong>Balance:</strong> {formatCurrency(filteredData[0][tableHeaders.headerBalance])}</p>
                   </div>
                 
             </div>:null}
@@ -39,16 +39,16 @@ const {filteredData,paymentData}=useMyContext();
             {/* ************************details************************** */}
             {paymentData.length!==0 && (() => {
                 const filterPayment = (filteredData.length!==0) 
-                    ? paymentData.filter((item) => filteredData[0]['STUDENT ID'] === item.STUDENT_ID) 
+                    ? paymentData.filter((item) => filteredData[0][tableHeaders.headerId] === item[tableHeaders.paymentId]) 
                     : [];
                 return (
                     <div className="col-span-3 grid grid-cols-2 gap-2 items-center bg-gray-100 p-4 rounded-md ">
                         <div className="text-center"><p><strong>Date</strong> </p></div>
                         <div className="text-center"><p><strong>Amount</strong></p></div>
                         {filterPayment.map((item,index) => (
-                          <React.Fragment key={`${item.STUDENT_ID}-${index}`}>
-                            <div className="text-center"><p>{new Date(item.DATE).toLocaleDateString('en-GB')}</p></div>
-                            <div className="text-center"><p>{formatCurrency(item.FEE_RECIVED)}0</p></div>
+                          <React.Fragment key={`${item[tableHeaders.paymentId]}-${index}`}>
+                            <div className="text-center"><p>{new Date(item[tableHeaders.paymentDate]).toLocaleDateString('en-GB')}</p></div>
+                            <div className="text-center"><p>{formatCurrency(item[tableHeaders.paymentFeeRecived])}0</p></div>
                           </React.Fragment>
                         ))}
                     </div>

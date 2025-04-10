@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import SideInfoCards from './SideInfoCards.jsx'
 import logo from '/images/icons/icon.svg';  // Import image
-
+import { tableHeaders } from '../global/GlobalFunctions.jsx';
 const SideNavBar = () => {
 
   const imageUrl = new URL(logo, import.meta.url).href;
@@ -15,7 +15,7 @@ const SideNavBar = () => {
         <div className="px-6 py-4 border-b border-gray-200 ">
           <span className="flex items-center">
           <img src={imageUrl}  alt="Logo"className="h-8"/>
-          <h1 className="text-xl font-semibold text-gray-900 ml-2">LOGO</h1>
+          <h1 className="text-xl font-semibold text-gray-900 ml-2">{tableHeaders.Title}</h1>
           </span>
         </div>
         {/* <!-- side nevigation bar options --> */}

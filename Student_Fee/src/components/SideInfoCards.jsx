@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMyContext } from '../global/MyContext.jsx'
-import  {formatCurrency}  from '../global/GlobalFunctions.jsx'
+import  {formatCurrency,tableHeaders}  from '../global/GlobalFunctions.jsx'
 
 const SideInfoCards = () => {
 const {StudentData}=useMyContext();
@@ -9,7 +9,7 @@ const TotalStudentNumber = StudentData.length;
 let TotalFeeReceived = 0;
 if (StudentData.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
-    TotalFeeReceived =Number(TotalFeeReceived)+ Number(StudentData[i]['FEE PAID']);
+    TotalFeeReceived =Number(TotalFeeReceived)+ Number(StudentData[i][tableHeaders.headerFeePaid]);
   }
 } else {
    TotalFeeReceived = 0;
@@ -17,7 +17,7 @@ if (StudentData.length > 0) {
 let TotalFee = 0;
 if (StudentData.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
-    TotalFee =Number(TotalFee)+ Number(StudentData[i]['TOTAL FEE']);
+    TotalFee =Number(TotalFee)+ Number(StudentData[i][tableHeaders.headerTotalFee]);
   }
 } else {
   TotalFee = 0;

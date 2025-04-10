@@ -1,6 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react'
 import { useMyContext } from '../../global/MyContext.jsx';
 import profileImg from '/images/corporate-user-icon.png'; //import image
+import {tableHeaders} from '../../global/GlobalFunctions.jsx';
 
 const InputSuggestion = (props) => {
     //values passed by props (label,placeholder,element(Name or Id),width(for input box className ex: w-full))
@@ -48,15 +49,15 @@ const handleKeyDown = (e) => {
 //autofill input boxes
 const autofill=(index)=>{
     if (filteredData.length > 0) {
-     setInput(prevState => ({ ...prevState, Id: filteredData[index]['STUDENT ID'],
-                                          ImgLink:filteredData[index].ImageLink,
-                                          Name: filteredData[index].NAME, 
-                                           Course: filteredData[index].COURSE,
-                                           Phone: filteredData[index]['MOBILE NO'],
-                                           University: filteredData[index].UNIVERSITY,
-                                           TotalFee: filteredData[index]['TOTAL FEE'],
-                                           FeePaid: filteredData[index]['FEE PAID'],
-                                          Balance:filteredData[index].BALANCE
+     setInput(prevState => ({ ...prevState, Id: filteredData[index][tableHeaders.headerId],
+                                          ImgLink:filteredData[index][tableHeaders.headerImg],
+                                          Name: filteredData[index][tableHeaders.headerName], 
+                                           Course: filteredData[index][tableHeaders.headerCourse],
+                                           Phone: filteredData[index][tableHeaders.headerPhone],
+                                           University: filteredData[index][tableHeaders.headerUniversity],
+                                           TotalFee: filteredData[index][tableHeaders.headerTotalFee],
+                                           FeePaid: filteredData[index][tableHeaders.headerFeePaid],
+                                          Balance:filteredData[index][tableHeaders.headerBalance]
                                           }));
                                           
    }}
@@ -117,7 +118,7 @@ const handleClickOutside = (event) => {
             setDropdownVisible(false);
            autofill(index);
           } }
-            onMouseEnter={() => setHighlightedIndex(index)}>{item.NAME} - {item['STUDENT ID']}</li>
+            onMouseEnter={() => setHighlightedIndex(index)}>{item[tableHeaders.headerName]} - {item[tableHeaders.headerId]}</li>
           ))}
         </ul>) : ( <div className="alert-container">
       <p className="p-2 alert-message">

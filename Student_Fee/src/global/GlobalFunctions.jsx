@@ -1,5 +1,25 @@
 //creating global functions to be accessible in all components
+//database table headers
+export const tableHeaders = {  
+                                  Title:"LOGO", //title of the page
+                                  headerId:"STUDENT ID", 
+                                  headerImg:"IMAGE", 
+                                  headerName:"NAME",
+                                  headerDate:"DATE", 
+                                  headerAmount:"AMOUNT",          
+                                  headerCourse:"COURSE", 
+                                  headerPhone:"MOBILE NO", 
+                                  headerUniversity:"UNIVERSITY", 
+                                  headerTotalFee:"TOTAL FEE", 
+                                  headerFeePaid:"FEE PAID", 
+                                  headerBalance:"BALANCE",
+                                  headerAddress:"VILLAGE",
+                              paymentId:"STUDENT_ID",
+                              paymentDate:"DATE",
+                              paymentFeeRecived:"FEE_RECIVED"
 
+                               
+                              };
 
 // set default date to today
 export const setToday=()=>{
@@ -43,16 +63,16 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,sheetName: course, ['STUDENT ID']: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
-          NAME: name,
-          ['MOBILE NO']:phone,
-          VILLAGE:`=CONCATENATE("${address}","")`, 
-          COURSE: course,
-          UNIVERSITY:`=CONCATENATE("${university}","")`,
-          ['FEE PAID']:"=SUMIF(PassBook!A:A,INDEX(A:A,ROW()),PassBook!D:D)",
-          BALANCE:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
+    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
+          [tableHeaders.headerName]: name,
+          [tableHeaders.headerPhone]:phone,
+          [tableHeaders.headerAddress]:`=CONCATENATE("${address}","")`, 
+          [tableHeaders.headerCourse]: course,
+          [tableHeaders.headerUniversity]:`=CONCATENATE("${university}","")`,
+          [tableHeaders.headerFeePaid]:"=SUMIF(PassBook!A:A,INDEX(A:A,ROW()),PassBook!D:D)",
+          [tableHeaders.headerBalance]:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
           
-          ['TOTAL FEE']:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"",
+          [tableHeaders.headerTotalFee]:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"",
       })
   })
   .then(() => {

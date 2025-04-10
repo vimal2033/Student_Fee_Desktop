@@ -1,10 +1,10 @@
 import React,{useEffect} from 'react';
 import SearchInput from './SearchInput.jsx';
 import { useMyContext } from '../../global/MyContext.jsx';
-import {formatCurrency} from  '../../global/GlobalFunctions.jsx';
+import {formatCurrency,showPopup,tableHeaders} from  '../../global/GlobalFunctions.jsx';
 import profileImg from '/images/corporate-user-icon.png'; //import image
 import Studentinfo from './Studentinfo.jsx';
-import { showPopup } from '../../global/GlobalFunctions'
+
 
 const SearchStudent = (props) => {
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
@@ -150,7 +150,7 @@ const SearchStudent = (props) => {
                             // console.log(e.target.parentElement.querySelectorAll('td')[1].innerText)
                             
                               setInput(prevState => ({ ...prevState,  Name:e.target.parentElement.querySelectorAll('td')[1].innerText,
-                                                                      //  Id:filteredData[e.target.parentElement.rowIndex]['STUDENT ID']
+                                                                      //  Id:filteredData[e.target.parentElement.rowIndex][tableHeaders.headerId]
                                                                       
                                }));
                               showPopup();
@@ -169,23 +169,19 @@ const SearchStudent = (props) => {
             onMouseEnter={() => setHighlightedIndex(index)}
             >
               {/* -------------------------------------------------------------------------- */}
-              <td  className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell ">{item['STUDENT ID']}</td>
-              <td className="px-4 py-4 text-sm text-gray-900 ">{item.NAME}</td>
-              <td className="px-4 py-4 text-sm text-gray-900">{item['MOBILE NO']}</td>
-              <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item.COURSE}</td>
-              <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item['TOTAL FEE'])}</td>
-              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item['FEE PAID'])}</td>
-              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item.BALANCE)}</td>
+              <td  className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell ">{item[tableHeaders.headerId]}</td>
+              <td className="px-4 py-4 text-sm text-gray-900 ">{item[tableHeaders.headerName]}</td>
+              <td className="px-4 py-4 text-sm text-gray-900">{item[tableHeaders.headerPhone]}</td>
+              <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item[tableHeaders.headerCourse]}</td>
+              <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item[tableHeaders.headerTotalFee])}</td>
+              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerFeePaid])}</td>
+              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerBalance])}</td>
               <td className="px-4 py-4 text-sm hidden sm:table-cell">
                       <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${item.BALANCE===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}
-                        >{item.BALANCE===0?"Paid":"Pending"}</span>
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${item[tableHeaders.headerBalance]===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}
+                        >{item[tableHeaders.headerBalance]===0?"Paid":"Pending"}</span>
               </td>
-                    {/* <td className="px-4 py-4 text-sm ">
-                      <button className="text-custom hover:text-custom-dark ">
-                        <i className="fas fa-edit mr-2 "></i>Edit
-                      </button>
-                    </td> */}
+                   
                {/* -------------------------------------------------------------------------- */}
               </tr>
           ))}
@@ -196,30 +192,23 @@ const SearchStudent = (props) => {
             {StudentData.map((item, index) => (
               <tr className={`cursor-pointer p-2 ${index === highlightedIndex ? 'bg-indigo-50' : ''}`} 
               key={index}
-            //   onClick={()=>{
-            //  // autofill(index);
-            // } }
               onMouseEnter={() => setHighlightedIndex(index)}>
                 {/* -------------------------------------------------------------------------- */}
-                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item['STUDENT ID']}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{item.NAME}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{item['MOBILE NO']}</td>
+                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item[tableHeaders.headerId]}</td>
+                <td className="px-4 py-4 text-sm text-gray-900">{item[tableHeaders.headerName]}</td>
+                <td className="px-4 py-4 text-sm text-gray-900">{item[tableHeaders.headerPhone]}</td>
                 
-                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item.COURSE}</td>
-                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item['TOTAL FEE'])}</td>
+                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item[tableHeaders.headerCourse]}</td>
+                <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item[tableHeaders.headerTotalFee])}</td>
                 
-                <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item['FEE PAID'])}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item.BALANCE)}</td>
+                <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerFeePaid])}</td>
+                <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerBalance])}</td>
                 <td className="px-4 py-4 text-sm hidden sm:table-cell">
                     <span
-                        className={`px-2 py-1 text-xs font-medium rounded-full ${item.BALANCE===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${item[tableHeaders.headerBalance]===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}
                         >{item.BALANCE===0?"Paid":"Pending"}</span>
                  </td>
-                      {/* <td className="px-4 py-4 text-sm ">
-                        <button className="text-custom hover:text-custom-dark">
-                          <i className="fas fa-edit mr-2"></i>Edit
-                        </button>
-                      </td> */}
+                      
                  {/* -------------------------------------------------------------------------- */}
                 </tr>
             ))}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMyContext } from '../../global/MyContext.jsx';
-
+import {tableHeaders} from '../../global/GlobalFunctions.jsx';
 const SearchInput = (props) => {
     //values passed by props (placeholder,element(Name or Id),width(for input box className ex: w-full))
 
@@ -41,14 +41,14 @@ const handleKeyDown = (e) => {
 //autofill input boxes
 const autofill=(index)=>{
     if (filteredData.length > 0) {
-     setInput(prevState => ({ ...prevState, Id: filteredData[index]['STUDENT ID'],
-                                          Name: filteredData[index].NAME, 
-                                           Course: filteredData[index].COURSE,
-                                           Phone: filteredData[index]['MOBILE NO'],
-                                           University: filteredData[index].UNIVERSITY,
-                                           TotalFee: filteredData[index]['TOTAL FEE'],
-                                           FeePaid: filteredData[index]['FEE PAID'],
-                                          Balance:filteredData[index].BALANCE
+     setInput(prevState => ({ ...prevState, Id: filteredData[index][tableHeaders.headerId],
+                                          Name: filteredData[index][tableHeaders.headerName], 
+                                           Course: filteredData[index][tableHeaders.headerCourse],
+                                           Phone: filteredData[index][tableHeaders.headerPhone],
+                                           University: filteredData[index][tableHeaders.headerUniversity],
+                                           TotalFee: filteredData[index][tableHeaders.headerTotalFee],
+                                           FeePaid: filteredData[index][tableHeaders.headerFeePaid],
+                                          Balance:filteredData[index][tableHeaders.headerBalance]
                                           }));
                                           
    }}

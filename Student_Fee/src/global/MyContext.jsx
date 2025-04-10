@@ -1,6 +1,6 @@
 // MyContext.js
 import React, { createContext, useContext, useState } from "react";
-import {setToday} from './GlobalFunctions.jsx'; //accessing global functions
+import {setToday,tableHeaders} from './GlobalFunctions.jsx'; //accessing global functions
 import profileImg from '/images/corporate-user-icon.png'; //import image
 
 // Create Context
@@ -20,8 +20,8 @@ export const MyProvider = ({ children }) => {
 // Filter data based on name and student ID
 const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "") 
   ? StudentData.filter((item) =>
-      (Input.Name.trim() !== "" && item.NAME.toLowerCase().includes(Input.Name.toLowerCase())) ||
-      (Input.Id.trim() !== "" && item['STUDENT ID'].toLowerCase().includes(Input.Id.toLowerCase()))
+      (Input.Name.trim() !== "" && item[tableHeaders.headerName].toLowerCase().includes(Input.Name.toLowerCase())) ||
+      (Input.Id.trim() !== "" && item[tableHeaders.headerId].toLowerCase().includes(Input.Id.toLowerCase()))
     )
   : [];
 
@@ -33,11 +33,11 @@ async function get_student_data() {
   try {
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
-    console.log("GET Response:", data);
+    // console.log("GET Response:", data);
     setStudentData(data.DCA);
     setPaymentData(data.PassBook);
-    console.log("Student Data:",StudentData);
-    console.log("Payment Data:",paymentData);
+    // console.log("Student Data:",StudentData);
+    // console.log("Payment Data:",paymentData);
   
     // document.getElementById("app").textContent = JSON.stringify(data[0].data[0].name);
   } catch (error) {
@@ -60,12 +60,15 @@ const removeAlert = (index) => {
 const [highlightedIndex, setHighlightedIndex] = useState(0);
 //for deshboard title
 const [deshboardTitle, setDeshboardTitle] = useState("");
+
+
   return (
     <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
                                 get_student_data,Input,setInput,filteredData,
                                 alerts, addAlert, removeAlert,
                                 highlightedIndex, setHighlightedIndex,
-                                deshboardTitle, setDeshboardTitle
+                                deshboardTitle, setDeshboardTitle,
+                                tableHeaders
                               }}>
       {children}
     </MyContext.Provider>
