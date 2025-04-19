@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useMyContext } from "../../global/MyContext.jsx";
 import {formatCurrency} from '../../global/GlobalFunctions.jsx';
-
+import { tableHeaders } from "../../global/GlobalFunctions.jsx";
 
 const PaymentHistory = (props) => {
 
@@ -72,18 +72,18 @@ const sortedData = sortOrder === 'newest' ? paymentData.slice().reverse() : paym
             sortedData.map((item, index) => (
                 <tr key={index}>
                   <td className="px-3 py-4 text-sm text-gray-900">
-                    {new Date(item.DATE).toLocaleDateString('en-GB')}
+                    {new Date(item[tableHeaders.paymentDate]).toLocaleDateString('en-GB')}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">
-                    {item.STUDENT_ID}
+                    {item[tableHeaders.paymentId]}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">
-                    {item.STUDENT_NAME}
+                    {item[tableHeaders.paymentName]}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900 hidden sm:table-cell">
-                    {item.COURSE}
+                    {item[tableHeaders.paymentCourse]}
                   </td>
-                  <td className="px-3 py-4 text-sm text-gray-900">{formatCurrency(item.FEE_RECIVED)}</td>
+                  <td className="px-3 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.paymentFeeRecived])}</td>
                 </tr>
                   ))
               ):(null)}

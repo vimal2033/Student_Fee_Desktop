@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 const TopBtns = () => {
-  return (
+  return ( 
     <>
     {/* <!-- creating buttons for add new student, record payment, generate receipt and search student --> */}
-    <div className="grid grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-4 gap-4 mb-6 ">
       
             <Link to="/" exact="true" className="!rounded-button flex items-center justify-center px-4 py-3 bg-black cursor-pointer text-white font-medium text-sm drop-shadow-xl" >
               <i className="fas fa-money-bill-wave mr-2"></i>
@@ -18,7 +18,7 @@ const TopBtns = () => {
               <i className="fas fa-search mr-2"></i>
               Search
             </Link>
-            <Link to="/payment-history" exact="true" className="!rounded-button flex items-center justify-center px-4 py-3 bg-black cursor-pointer text-white font-medium text-sm drop-shadow-xl" >
+            <Link to="/payment-history" exact="true" className="!rounded-button flex items-center justify-center px-4 py-3 bg-black cursor-pointer text-white font-medium text-sm drop-shadow-xl " >
               <i className="fas fa-receipt mr-2"></i>
               History
             </Link>

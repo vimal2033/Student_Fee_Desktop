@@ -8,7 +8,7 @@ import Studentinfo from '../Page3_SearchStudent/Studentinfo.jsx';
 
 
 const FeeEntryCardDeshboard = (props) => {
-const {get_student_data}=useMyContext();
+const {get_student_data,currentSession}=useMyContext();
 const {Input,setInput,dropdownVisible,}=useMyContext();
 const { addAlert, removeAlert } = useMyContext();
 
@@ -29,13 +29,13 @@ const fillblank=()=>{
 
  const handleSubmitPayment = () => {
     if (Input.Name.trim() !== "" && Input.Id.trim() !== "" && Input.Amount.trim()!=="") {
-      submit_Payment(Input.Id, Input.Name, Input.Course, Input.Amount, Input.Date);
+      submit_Payment(Input.Id, Input.Name, Input.Course, Input.Amount, Input.Date,currentSession.url);
       addAlert("Success! Your changes have been saved.", "bg-green-500");
       setTimeout(() => { removeAlert(0); }, 3000);
       fillblank();
       setInput(prevState => ({ ...prevState, Name: "", Amount: "" }));
-      setTimeout(() => {get_student_data();}, 500);
-      setTimeout(() => {get_student_data();}, 5000);
+      setTimeout(() => {get_student_data(currentSession.url);}, 500);
+      setTimeout(() => {get_student_data(currentSession.url);}, 5000);
     } else {
       addAlert("Failed! Please enter all the details correctly.", "bg-red-500");
       setTimeout(() => { removeAlert(0); }, 3000);

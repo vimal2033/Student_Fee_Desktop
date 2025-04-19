@@ -17,7 +17,7 @@ const {filteredData,paymentData}=useMyContext();
         <div className="grid grid-cols-3 gap-4 items-center">
             {/* <input type="text" placeholder="Search..." className="col-span-1 border border-gray-300 rounded-md p-2"/> */}
            {/* ************************details************************** */}
-           {filteredData.length!==0?<div className="col-span-3 grid grid-cols-2 gap-4 items-center bg-gray-100 p-4 rounded-md ">
+           {filteredData?.length!==0?<div className="col-span-3 grid grid-cols-2 gap-4 items-center bg-gray-100 p-4 rounded-md ">
                 
                 
                 
@@ -37,18 +37,18 @@ const {filteredData,paymentData}=useMyContext();
             </div>:null}
             {/* *********************************************************** */}
             {/* ************************details************************** */}
-            {paymentData.length!==0 && (() => {
-                const filterPayment = (filteredData.length!==0) 
+            {paymentData?.length!==0 && (() => {
+                const filterPayment = (filteredData?.length!==0) 
                     ? paymentData.filter((item) => filteredData[0][tableHeaders.headerId] === item[tableHeaders.paymentId]) 
                     : [];
                 return (
                     <div className="col-span-3 grid grid-cols-2 gap-2 items-center bg-gray-100 p-4 rounded-md ">
                         <div className="text-center"><p><strong>Date</strong> </p></div>
                         <div className="text-center"><p><strong>Amount</strong></p></div>
-                        {filterPayment.map((item,index) => (
+                        {filterPayment?.map((item,index) => (
                           <React.Fragment key={`${item[tableHeaders.paymentId]}-${index}`}>
-                            <div className="text-center"><p>{new Date(item[tableHeaders.paymentDate]).toLocaleDateString('en-GB')}</p></div>
-                            <div className="text-center"><p>{formatCurrency(item[tableHeaders.paymentFeeRecived])}0</p></div>
+                            <div className="text-center"><p>{new Date(item[tableHeaders?.paymentDate]).toLocaleDateString('en-GB')}</p></div>
+                            <div className="text-center"><p>{formatCurrency(item[tableHeaders?.paymentFeeRecived])}</p></div>
                           </React.Fragment>
                         ))}
                     </div>

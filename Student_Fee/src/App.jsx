@@ -10,37 +10,29 @@ import PaymentHistory from './components/Page4_PaymentHistory/PaymentHistory.jsx
 import SearchStudent from './components/Page3_SearchStudent/SearchStudent.jsx';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { useMyContext } from './global/MyContext.jsx';
+import YearDrop from './components/YearDrop.jsx';
 function App() {
   
-  const {get_student_data,setDeshboardTitle}=useMyContext();
- 
-
-// now useEffect to call get)student)data function
-useEffect(()=> {
-   
-  get_student_data();
-  // eslint-disable-next-line
-}, []);
+  const {setDeshboardTitle}=useMyContext();
 
   return (
     <>
    
     <Router>
-   
       <div className="min-h-screen flex">
-        
         {/* <div className="collapse lg:visible "> */}
         <div className="collapse lg:visible " >
           {/* <!-- side navigation bar --> */}
           <SideNavBar />
         </div>
       
-        <div className="flex-1  lg:ml-64">
+        <div className="flex-1  lg:ml-64 ">
           {/* <!-- header of the web page --> */}
           <TopHeaderBar />
+          
 
           {/* <!-- main content of the web page -->    */}
-          <main className="p-6">
+          <main className="p-6 ">
             
             {/* <!-- creating buttons for add new student, record payment, generate receipt and search student --> */}
             <TopBtns />

@@ -1,12 +1,12 @@
 //creating global functions to be accessible in all components
 //database table headers
 export const tableHeaders = {  
-                                  Title:"LOGO", //title of the page
-                                  headerId:"STUDENT ID", 
-                                  headerImg:"IMAGE", 
+                                  Title:"TCA", //title of the page
+                                  headerId:"ID", 
+                                  headerImg:"ImageLink", 
                                   headerName:"NAME",
                                   headerDate:"DATE", 
-                                  headerAmount:"AMOUNT",          
+                                  headerAmount:"FEE PAID",          
                                   headerCourse:"COURSE", 
                                   headerPhone:"MOBILE NO", 
                                   headerUniversity:"UNIVERSITY", 
@@ -14,7 +14,9 @@ export const tableHeaders = {
                                   headerFeePaid:"FEE PAID", 
                                   headerBalance:"BALANCE",
                                   headerAddress:"VILLAGE",
-                              paymentId:"STUDENT_ID",
+                              paymentId:"ID",
+                              paymentName:"NAME",
+                              paymentCourse:"COURSE",
                               paymentDate:"DATE",
                               paymentFeeRecived:"FEE_RECIVED"
 
@@ -36,24 +38,32 @@ export const setToday=()=>{
 
   
 
-   //submit payment details (removed async await)
- export const submit_Payment=(id,name,course,fee,date)=>{
-  const url = import.meta.env.VITE_API_URL;
-
-  fetch(url, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ apiKey:import.meta.env.VITE_API_KEY,sheetName: "PassBook",STUDENT_ID:id, STUDENT_NAME: name, COURSE: course,FEE_RECIVED:fee,DATE:date })
-
-  })
-  .then(() => {
-    console.log("Data sent successfully!");
-  })
-  .catch(error => {
-    console.error("Error:", error);
-  });
-}
+  export const submit_Payment = (id, name, course, fee, date,currenturl) => {
+    const url = import.meta.env.VITE_API_URL;
+    const payload = {
+      apiKey: import.meta.env.VITE_API_KEY,
+      apidataurl: currenturl,
+      sheetName: "PassBook",
+      [tableHeaders.paymentId]: id,
+      [tableHeaders.paymentName]: name,
+      [tableHeaders.paymentCourse]: course,
+      [tableHeaders.paymentFeeRecived]: fee,
+      DATE: date,
+    };
+  
+    fetch(url, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  
+    // No .then/.catch because you won't get a visible response in no-cors mode.
+    // console.log("Payment submission triggered (no-cors).");
+  };
+  
    //submit student details (removed async await)
  export const submit_Student_Details=(name,phone,address,course,university)=>{
   const url =import.meta.env.VITE_API_URL;
@@ -63,7 +73,7 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
+    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,apidataurl:import.meta.env.VITE_API_DATA_URL,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
           [tableHeaders.headerName]: name,
           [tableHeaders.headerPhone]:phone,
           [tableHeaders.headerAddress]:`=CONCATENATE("${address}","")`, 

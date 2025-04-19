@@ -80,9 +80,10 @@ const AddStudent = (props) => {
               <select className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm">
                 <option value="">Select Course</option>
                 <option value="DCA">DCA</option>
-                {/* <option value="PGDCA">PGDCA</option>
+                <option value="PGDCA">PGDCA</option>
+                <option value="MDCH">MDCH</option>
                 <option value="TALLY">TALLY</option>
-                <option value="BASIC">BASIC</option> */}
+                <option value="BASIC">BASIC</option> 
               </select>
             </div>
 

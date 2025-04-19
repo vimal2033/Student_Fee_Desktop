@@ -5,9 +5,9 @@ import  {formatCurrency,tableHeaders}  from '../global/GlobalFunctions.jsx'
 const SideInfoCards = () => {
 const {StudentData}=useMyContext();
  
-const TotalStudentNumber = StudentData.length;
+const TotalStudentNumber = StudentData?.length;
 let TotalFeeReceived = 0;
-if (StudentData.length > 0) {
+if (StudentData?.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
     TotalFeeReceived =Number(TotalFeeReceived)+ Number(StudentData[i][tableHeaders.headerFeePaid]);
   }
@@ -15,7 +15,7 @@ if (StudentData.length > 0) {
    TotalFeeReceived = 0;
 }
 let TotalFee = 0;
-if (StudentData.length > 0) {
+if (StudentData?.length > 0) {
   for (let i = 1; i < StudentData.length; i++) {
     TotalFee =Number(TotalFee)+ Number(StudentData[i][tableHeaders.headerTotalFee]);
   }

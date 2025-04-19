@@ -1,16 +1,29 @@
-import React from 'react'
+import React,{ useState,useEffect} from 'react'
 import { useMyContext } from '../global/MyContext'
 import profileImg from '/images/corporate-user-icon.png'; //import image
 import logo from '/images/icons/icon.svg';  // Import image
 import { tableHeaders } from '../global/GlobalFunctions';
+import YearDropdown from './YearDrop';
+
 
 const TopHeaderBar = () => {
-  const {deshboardTitle}=useMyContext();
+  const {deshboardTitle,setCurrentSession,currentSession}=useMyContext();
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
   const imageUrl = new URL(logo, import.meta.url).href;
+const [showYear, setShowYear] = useState(false);
+
+const handleSessionSelect = (session) => {
+  setCurrentSession(session.name); // Update the current session state
+  // console.log("Selected session:", currentSession); // Handle the selected session here
+  setShowYear(false); // Close the dropdown after selection
+  // Handle the selected session here
+}
+
+
 
   return (
     <>
+
     {/* <!-- header of the web page --> */}
     <header className="bg-white border-b border-gray-200 drop-shadow-md ">
           <div className="px-6 py-4 flex items-center justify-between">
@@ -19,6 +32,7 @@ const TopHeaderBar = () => {
           <span className="flex items-center">
           <img src={imageUrl} alt=" Logo"className="h-8"/>
           <h1 className="text-xl font-semibold text-gray-900 ml-2">{tableHeaders.Title}</h1>
+          
           </span>
         </div>
             {/* ******************************* */}
@@ -26,12 +40,20 @@ const TopHeaderBar = () => {
             <h1 className="text-xl font-semibold text-gray-900">{deshboardTitle}</h1>
             {/* <!-- user profile --> */}
             <div className="flex items-center">
-              <button className="flex items-center text-sm font-medium text-gray-700 drop-shadow-md">
+              <button className="flex items-center text-sm font-medium text-gray-700 drop-shadow-md"
+                onClick={() => setShowYear(!showYear)}>   {/*  Toggle dropdown visibility */}
                 <img src={profileImgUrl}
                   alt="" className="w-8 h-8 rounded-full mr-2 "/>
-                <span>Admin User</span>
-                {/* <i className="fas fa-chevron-down ml-2 text-gray-400"></i> */}
+                <span>{currentSession}</span>
+                <i className="fas fa-chevron-down ml-2 text-gray-400"></i>
               </button>
+
+{/* ************************* */}
+
+<YearDropdown showYearDropdown={showYear} onSelect={handleSessionSelect}/>
+
+{/* ******************************* */}
+
             </div> 
             {/* <!-- user profile div close --> */}
           </div>

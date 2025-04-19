@@ -14,6 +14,7 @@ export const MyProvider = ({ children }) => {
   
   const [StudentData,setStudentData]=useState([]);  //state for data of all the students
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
+  const [sheetList,setSheetList]=useState([]);  //state for data of all the payments
   const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
   
   
@@ -27,15 +28,19 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
 
   
 //get student data
-async function get_student_data() {
-  const url = import.meta.env.VITE_API_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
+async function get_student_data(apidataurl) {
+  // console.log("API URL:", apidataurl);
+  const url = import.meta.env.VITE_API_URL + 
+  "?apiKey=" + import.meta.env.VITE_API_KEY + 
+  "&apidataurl=" + encodeURIComponent(apidataurl);
 
   try {
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
     // console.log("GET Response:", data);
-    setStudentData(data.DCA);
+    setStudentData(data.STD);
     setPaymentData(data.PassBook);
+    //  setSheetList(data.FolderSheets);
     // console.log("Student Data:",StudentData);
     // console.log("Payment Data:",paymentData);
   
@@ -60,15 +65,19 @@ const removeAlert = (index) => {
 const [highlightedIndex, setHighlightedIndex] = useState(0);
 //for deshboard title
 const [deshboardTitle, setDeshboardTitle] = useState("");
-
-
+ //for current session
+ const [currentSession, setCurrentSession] = useState(""); // Default session
+const [dataurl,setdataUrl]=useState("");
   return (
-    <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
+    <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,sheetList,
                                 get_student_data,Input,setInput,filteredData,
                                 alerts, addAlert, removeAlert,
                                 highlightedIndex, setHighlightedIndex,
                                 deshboardTitle, setDeshboardTitle,
-                                tableHeaders
+                                tableHeaders,
+                                currentSession, setCurrentSession,
+                                dataurl,setdataUrl,setSheetList
+
                               }}>
       {children}
     </MyContext.Provider>
