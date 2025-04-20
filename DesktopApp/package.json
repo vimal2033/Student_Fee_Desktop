@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
- "build": "cd ../Student_Fee && npm run build && cd ../DesktopApp && (if exist builder rmdir /s /q builder) && (if exist dist rmdir /s /q dist) && mkdir builder && cmd /c xcopy /E /I /Y \"..\\Student_Fee\\dist\" \".\\builder\" && electron-builder --win --ia32 --x64",
+    "build": "cd ../Student_Fee && npm run build && cd ../DesktopApp && (if exist builder rmdir /s /q builder) && (if exist dist rmdir /s /q dist) && mkdir builder && cmd /c xcopy /E /I /Y \"..\\Student_Fee\\dist\" \".\\builder\" && electron-builder --win --ia32 --x64",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -17,5 +17,15 @@
   "devDependencies": {
     "electron": "^35.1.2",
     "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.fee.managment.desktop",
+    "productName": "Fee Management Desktop",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "images/icons/icon.ico"
+    }
   }
 }
