@@ -1,4 +1,4 @@
-import React,{ useState,useEffect} from 'react'
+import React,{ useState} from 'react'
 import { useMyContext } from '../global/MyContext'
 import profileImg from '/images/corporate-user-icon.png'; //import image
 import logo from '/images/icons/icon.svg';  // Import image
@@ -7,16 +7,31 @@ import YearDropdown from './YearDrop';
 
 
 const TopHeaderBar = () => {
-  const {deshboardTitle,setCurrentSession,currentSession}=useMyContext();
+  const {setInput,deshboardTitle,setCurrentSession,currentSession,get_student_data,addAlert,removeAlert}=useMyContext();
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
   const imageUrl = new URL(logo, import.meta.url).href;
 const [showYear, setShowYear] = useState(false);
 
 const handleSessionSelect = (session) => {
-  setCurrentSession(session.name); // Update the current session state
+  setCurrentSession(session); // Update the current session state
   // console.log("Selected session:", currentSession); // Handle the selected session here
   setShowYear(false); // Close the dropdown after selection
   // Handle the selected session here
+  get_student_data(session.url);
+
+  setInput(prevState => ({ ...prevState, Id: "",
+    Name: "", 
+    ImgLink:profileImgUrl,
+   Course: "",
+    Phone: "",
+    University: "",
+    TotalFee: "0",
+    FeePaid: "0",
+    Balance:"0"
+    }))
+
+  addAlert("Session changed", "bg-green-500");
+  setTimeout(() => { removeAlert(0); }, 3000);
 }
 
 
@@ -44,7 +59,7 @@ const handleSessionSelect = (session) => {
                 onClick={() => setShowYear(!showYear)}>   {/*  Toggle dropdown visibility */}
                 <img src={profileImgUrl}
                   alt="" className="w-8 h-8 rounded-full mr-2 "/>
-                <span>{currentSession}</span>
+                <span>{currentSession?currentSession.name:""}</span>
                 <i className="fas fa-chevron-down ml-2 text-gray-400"></i>
               </button>
 

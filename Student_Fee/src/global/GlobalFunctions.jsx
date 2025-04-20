@@ -37,8 +37,9 @@ export const setToday=()=>{
   }
 
   
-
+//sending payment deta
   export const submit_Payment = (id, name, course, fee, date,currenturl) => {
+    // console.log(currenturl);
     const url = import.meta.env.VITE_API_URL;
     const payload = {
       apiKey: import.meta.env.VITE_API_KEY,
@@ -65,7 +66,7 @@ export const setToday=()=>{
   };
   
    //submit student details (removed async await)
- export const submit_Student_Details=(name,phone,address,course,university)=>{
+ export const submit_Student_Details=(name,phone,address,course,university,currenturl)=>{
   const url =import.meta.env.VITE_API_URL;
 
   fetch(url, {
@@ -73,7 +74,7 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,apidataurl:import.meta.env.VITE_API_DATA_URL,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
+    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,apidataurl:currenturl,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2)&INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1",
           [tableHeaders.headerName]: name,
           [tableHeaders.headerPhone]:phone,
           [tableHeaders.headerAddress]:`=CONCATENATE("${address}","")`, 
@@ -86,7 +87,7 @@ export const setToday=()=>{
       })
   })
   .then(() => {
-    console.log("Data sent successfully!");
+    // console.log("Data sent successfully!");
   })
   .catch(error => {
     console.error("Error:", error);

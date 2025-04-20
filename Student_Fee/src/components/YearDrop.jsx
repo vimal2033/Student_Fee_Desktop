@@ -14,7 +14,7 @@ const fetchSheetLIst=async () => {
         const data = await response.json();
         // console.log("GET Response:", data);
         setSheetList(data.sheets);
-        setCurrentSession(data.sheets[0].name); // Set default session when component mounts
+        setCurrentSession(data.sheets[0]); // Set default session when component mounts
         get_student_data(data.sheets[0].url); // Fetch student data when component mounts
       //  console.log(data.sheets[0].url);
 
@@ -27,7 +27,7 @@ useEffect(() => {
   fetchSheetLIst(); // Fetch sheet list when component mounts
  
   
-    sheetList? setCurrentSession(sheetList[0]):setCurrentSession("") // Set default session when component mounts
+    sheetList? setCurrentSession(sheetList[0]):setCurrentSession(null) // Set default session when component mounts
 }, [])
   if (!showYearDropdown) return null;
 

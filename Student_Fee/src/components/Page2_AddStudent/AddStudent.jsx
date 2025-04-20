@@ -12,7 +12,7 @@ const AddStudent = (props) => {
   }, [props.setTitle]);
   
   const { addAlert, removeAlert } = useMyContext();
-  const {get_student_data}=useMyContext();
+  const {get_student_data,currentSession}=useMyContext();
   
   const [phone, setPhone] = useState("");
 
@@ -36,14 +36,14 @@ const AddStudent = (props) => {
         setTimeout(() => { removeAlert(0); }, 3000);
         return;
       }
-
-      submit_Student_Details(name, phone, address, course, university);
-      console.log("Data submitted successfully");
+// console.log(currentSession);
+      submit_Student_Details(name, phone, address, course, university,currentSession.url);
+      // console.log("Data submitted successfully");
 
       fill_blank_student();
       addAlert("Success! Your changes have been saved.", "bg-green-500");
-      setTimeout(() => {get_student_data();}, 500);
-      setTimeout(() => {get_student_data();}, 5000);
+      setTimeout(() => {get_student_data(currentSession.url);}, 500);
+      setTimeout(() => {get_student_data(currentSession.url);}, 5000);
       setTimeout(() => { removeAlert(0); }, 3000);
       
     } else {

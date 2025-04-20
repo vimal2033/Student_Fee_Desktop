@@ -29,6 +29,7 @@ const fillblank=()=>{
 
  const handleSubmitPayment = () => {
     if (Input.Name.trim() !== "" && Input.Id.trim() !== "" && Input.Amount.trim()!=="") {
+      // console.log(currentSession.url)
       submit_Payment(Input.Id, Input.Name, Input.Course, Input.Amount, Input.Date,currentSession.url);
       addAlert("Success! Your changes have been saved.", "bg-green-500");
       setTimeout(() => { removeAlert(0); }, 3000);
