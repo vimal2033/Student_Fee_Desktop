@@ -83,7 +83,7 @@ export const setToday=()=>{
           [tableHeaders.headerFeePaid]:"=SUMIF(PassBook!A:A,INDEX(A:A,ROW()),PassBook!D:D)",
           [tableHeaders.headerBalance]:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
           
-          [tableHeaders.headerTotalFee]:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"",
+          [tableHeaders.headerTotalFee]:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":(""?"":"3000"),
       })
   })
   .then(() => {

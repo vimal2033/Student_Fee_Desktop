@@ -30,7 +30,7 @@ const AddStudent = (props) => {
     // Regular expression for validating mobile number
     const phoneRegex = /^[0-9]{10}$/;
 
-    if (name !== "" && course !== "" && university !== "" && phone !== "" && address !== "") {
+    if (name !== "" && course !== ""  && phone !== "" && address !== "") {
       if (!phoneRegex.test(phone)) {
         addAlert("Failed! Please enter a valid 10-digit mobile number.", "bg-red-500");
         setTimeout(() => { removeAlert(0); }, 3000);
