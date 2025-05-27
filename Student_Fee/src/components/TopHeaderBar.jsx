@@ -7,12 +7,13 @@ import YearDropdown from './YearDrop';
 
 
 const TopHeaderBar = () => {
-  const {setInput,deshboardTitle,setCurrentSession,currentSession,get_student_data,addAlert,removeAlert}=useMyContext();
+  const {setLoadingoverlystate,setInput,deshboardTitle,setCurrentSession,currentSession,get_student_data,addAlert,removeAlert}=useMyContext();
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
   const imageUrl = new URL(logo, import.meta.url).href;
 const [showYear, setShowYear] = useState(false);
 
 const handleSessionSelect = (session) => {
+setLoadingoverlystate(true); // Set loading state to true
   setCurrentSession(session); // Update the current session state
   // console.log("Selected session:", currentSession); // Handle the selected session here
   setShowYear(false); // Close the dropdown after selection
@@ -29,9 +30,8 @@ const handleSessionSelect = (session) => {
     FeePaid: "0",
     Balance:"0"
     }))
-
-  addAlert("Session changed", "bg-green-500");
-  setTimeout(() => { removeAlert(0); }, 3000);
+ addAlert("Session changed", "bg-green-500");
+  setTimeout(() => { removeAlert(0); }, 5000);
 }
 
 

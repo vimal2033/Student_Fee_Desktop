@@ -4,6 +4,7 @@ import StudentDetailsDeshboard from './StudentDetailsDeshboard.jsx'
 import { useMyContext } from '../../global/MyContext.jsx'
 import profileImg from '/images/corporate-user-icon.png'; //import image
 
+
 const DashboardFeeEntry = (props) => {
   const {setInput}=useMyContext();
   const profileImgUrl = new URL(profileImg, import.meta.url).href;

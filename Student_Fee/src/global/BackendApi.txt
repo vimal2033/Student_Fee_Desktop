@@ -1,14 +1,17 @@
-// Replace this with your actual API key
-const API_KEY = "########";
+
+//This code do read and write operation of the  GOOGLE_SHEETS data whos url is passes as parameter
+
+
+const API_KEY = "#########"; //enter api key you wana use in frontend
 
 function doGet(e) {
-  if (!e || e.parameter.apiKey !== API_KEY) {
+  if (!e || e.parameter.apiKey !== API_KEY || !e.parameter.apidataurl) {
     return ContentService.createTextOutput(
       JSON.stringify({ status: 401, error: "Unauthorized - Invalid API Key" })
     ).setMimeType(ContentService.MimeType.JSON);
   }
 
-  const ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1BL9WVnFeuT4L2M2RhFCUuziyN_L80hV3jewDP-N5kGU/edit");
+  const ss = SpreadsheetApp.openByUrl(e.parameter.apidataurl);
 
   function getSheetData(sheetName) {
     const sheet = ss.getSheetByName(sheetName);
@@ -26,12 +29,19 @@ function doGet(e) {
     });
   }
 
-  const sheet1Data = getSheetData("DCA");
+  // Fetch data from both sheets
+  // enter the name of your sheet
+  const sheet1Data = getSheetData("DCA").concat(getSheetData("PGDCA"),
+                     getSheetData("MDCH"),             
+                     getSheetData("BASIC"),
+                     getSheetData("TALLY")
+
+                                  );
   const sheet2Data = getSheetData("PassBook");
 
   return ContentService.createTextOutput(
     JSON.stringify({
-      DCA: sheet1Data,
+      STD: sheet1Data,
       PassBook: sheet2Data,
     })
   ).setMimeType(ContentService.MimeType.JSON);
@@ -43,13 +53,13 @@ function doPost(e) {
     const params = JSON.parse(e.postData.contents);
 
     // Validate API key
-    if (!params.apiKey || params.apiKey !== API_KEY) {
+    if (!params.apiKey || params.apiKey !== API_KEY || !params.apidataurl) {
       return ContentService.createTextOutput(
         JSON.stringify({ status: 401, error: "Unauthorized - Invalid API Key" })
       ).setMimeType(ContentService.MimeType.JSON);
     }
 
-    const ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1BL9WVnFeuT4L2M2RhFCUuziyN_L80hV3jewDP-N5kGU/edit");
+    const ss = SpreadsheetApp.openByUrl(params.apidataurl);
     const bodyJSON = params;
 
     if (!bodyJSON.sheetName) {
@@ -62,12 +72,37 @@ function doPost(e) {
     }
 
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    const rowData = headers.map(h => bodyJSON[h] || "");
+    const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues(); // IDs from first column
+
+    // Get the last used ID in the first column
+    let lastId = '';
+    for (let i = data.length - 1; i >= 0; i--) {
+      const id = data[i][0];
+      if (typeof id === 'string' && id.trim() !== '') {
+        lastId = id.trim();
+        break;
+      }
+    }
+
+    // Generate next ID
+    let newId = 'ID001'; // fallback
+    if (lastId) {
+      const match = lastId.match(/^([A-Za-z]+)(\d+)$/);
+      if (match) {
+        const prefix = match[1];
+        const number = parseInt(match[2], 10) + 1;
+        const paddedNumber = number.toString().padStart(match[2].length, '0');
+        newId = prefix + paddedNumber;
+      }
+    }
+
+    // Build rowData starting with the new ID
+    const rowData = [newId, ...headers.slice(1).map(h => bodyJSON[h] || "")];
 
     sheet.appendRow(rowData);
 
     return ContentService.createTextOutput(
-      JSON.stringify({ status: 200, message: "Data added successfully!" })
+      JSON.stringify({ status: 200, message: "Data added successfully!", id: newId })
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(
@@ -75,53 +110,4 @@ function doPost(e) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 }
-
-
-
-// ****************************************************************************
-// get request
-// const apiUrl = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?apiKey=YOUR_API_KEY";
-
-// fetch(apiUrl)
-//   .then(response => {
-//     if (!response.ok) {
-//       throw new Error(`Error: ${response.status}`);
-//     }
-//     return response.json();
-//   })
-//   .then(data => {
-//     console.log("GET Response:", data);
-//   })
-//   .catch(error => console.error("Error:", error));
-// **************************************************************************
-// post request
-// const apiUrl = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-
-// const postData = {
-//   apiKey: "YOUR_API_KEY",
-//   sheetName: "DCA",
-//   "STUDENT ID": "10006",
-//   "NAME": "RAMESH",
-//   "MOBILE NO": "9876543211",
-//   "VILLAGE": "RAIPUR"
-// };
-
-// fetch(apiUrl, {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json"
-//   },
-//   body: JSON.stringify(postData)
-// })
-//   .then(response => {
-//     if (!response.ok) {
-//       throw new Error(`Error: ${response.status}`);
-//     }
-//     return response.json();
-//   })
-//   .then(data => {
-//     console.log("POST Response:", data);
-//   })
-//   .catch(error => console.error("Error:", error));
-// **************************************************************************
 

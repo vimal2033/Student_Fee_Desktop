@@ -74,7 +74,7 @@ export const setToday=()=>{
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     // eslint-disable-next-line
-    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,apidataurl:currenturl,sheetName: course, [tableHeaders.headerId]: "=LEFT(INDEX(A:A,ROW()-1,1),LEN(INDEX(A:A,ROW()-1,1))-2) & TEXT(INT(RIGHT(INDEX(A:A,ROW()-1,1),2))+1, \"00\")",
+    body: JSON.stringify({apiKey:import.meta.env.VITE_API_KEY,apidataurl:currenturl,sheetName: course, 
           [tableHeaders.headerName]: name,
           [tableHeaders.headerPhone]:phone,
           [tableHeaders.headerAddress]:`=CONCATENATE("${address}","")`, 
@@ -83,7 +83,7 @@ export const setToday=()=>{
           [tableHeaders.headerFeePaid]:"=SUMIF(PassBook!A:A,INDEX(A:A,ROW()),PassBook!D:D)",
           [tableHeaders.headerBalance]:"=INDEX(I:I,ROW())-INDEX(J:J,ROW())",
           
-          [tableHeaders.headerTotalFee]:(course=="DCA" || course=="PGDCA")?"=if(INDEX(H:H,ROW())=\"\",\"\",ifs(INDEX(H:H,ROW())=\"C.V. RAMAN\",13500,INDEX(H:H,ROW())=\"ISBM\",12500))":"3000",
+          [tableHeaders.headerTotalFee]:course=="DCA"?"13500":(course=="PGDCA"?"15500":"3000"),
       })
   })
   .then(() => {

@@ -10,15 +10,17 @@ import PaymentHistory from './components/Page4_PaymentHistory/PaymentHistory.jsx
 import SearchStudent from './components/Page3_SearchStudent/SearchStudent.jsx';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { useMyContext } from './global/MyContext.jsx';
-import YearDrop from './components/YearDrop.jsx';
+import Loadingoverlay from './components/LoadingScreen.jsx';
 function App() {
   
-  const {setDeshboardTitle}=useMyContext();
+  const {setDeshboardTitle,loadingoverlystate}=useMyContext();
 
   return (
     <>
    
     <Router>
+      {loadingoverlystate && <Loadingoverlay message="Loading, please wait..." />}
+      {!loadingoverlystate &&
       <div className="min-h-screen flex">
         {/* <div className="collapse lg:visible "> */}
         <div className="collapse lg:visible " >
@@ -51,7 +53,7 @@ function App() {
           </main>
         </div>
       </div>
-
+}
       </Router>
      
     </>

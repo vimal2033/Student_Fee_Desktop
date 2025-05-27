@@ -38,8 +38,10 @@ async function get_student_data(apidataurl) {
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
     // console.log("GET Response:", data);
-    setStudentData(data.STD);
+     setStudentData(data.STD);
     setPaymentData(data.PassBook);
+    setLoadingoverlystate(false); // Set loading state to false after data is fetched
+ 
     //  setSheetList(data.FolderSheets);
     // console.log("Student Data:",StudentData);
     // console.log("Payment Data:",paymentData);
@@ -47,6 +49,7 @@ async function get_student_data(apidataurl) {
     // document.getElementById("app").textContent = JSON.stringify(data[0].data[0].name);
   } catch (error) {
     console.error("Error:", error);
+    
   }
 }
 
@@ -68,6 +71,8 @@ const [deshboardTitle, setDeshboardTitle] = useState("");
  //for current session
  const [currentSession, setCurrentSession] = useState(""); // Default session
 const [dataurl,setdataUrl]=useState("");
+//for loading screen
+ const [loadingoverlystate, setLoadingoverlystate] = useState(false);
   return (
     <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,sheetList,
                                 get_student_data,Input,setInput,filteredData,
@@ -76,7 +81,8 @@ const [dataurl,setdataUrl]=useState("");
                                 deshboardTitle, setDeshboardTitle,
                                 tableHeaders,
                                 currentSession, setCurrentSession,
-                                dataurl,setdataUrl,setSheetList
+                                dataurl,setdataUrl,setSheetList,
+                                loadingoverlystate, setLoadingoverlystate
 
                               }}>
       {children}
