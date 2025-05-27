@@ -5,9 +5,10 @@ import { useMyContext } from '../global/MyContext';
 
 const YearDropdown = ({ showYearDropdown, onSelect }) => {
 
-const {setCurrentSession,sheetList,setSheetList,get_student_data} = useMyContext();
+const {setLoadingoverlystate,setCurrentSession,sheetList,setSheetList,get_student_data} = useMyContext();
 
 const fetchSheetLIst=async () => {
+  setLoadingoverlystate(true); // Set loading state to true while fetching data
     const url = import.meta.env.VITE_API_DATA_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
     try {
         const response = await fetch(url, { method: "GET" });
@@ -17,9 +18,10 @@ const fetchSheetLIst=async () => {
         setCurrentSession(data.sheets[0]); // Set default session when component mounts
         get_student_data(data.sheets[0].url); // Fetch student data when component mounts
       //  console.log(data.sheets[0].url);
-
+setLoadingoverlystate(false); // Set loading state to false after data is fetched
     } catch (error) {
         console.error("Error:", error);
+        setLoadingoverlystate(false); // Set loading state to false in case of error
     }
 }
 

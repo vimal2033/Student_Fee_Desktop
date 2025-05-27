@@ -20,7 +20,7 @@ function App() {
    
     <Router>
       {loadingoverlystate && <Loadingoverlay message="Loading, please wait..." />}
-      {!loadingoverlystate &&
+      
       <div className="min-h-screen flex">
         {/* <div className="collapse lg:visible "> */}
         <div className="collapse lg:visible " >
@@ -53,7 +53,7 @@ function App() {
           </main>
         </div>
       </div>
-}
+
       </Router>
      
     </>
