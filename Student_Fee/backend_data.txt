@@ -2,7 +2,7 @@
 //This code do read and write operation of the  GOOGLE_SHEETS data whos url is passes as parameter
 
 
-const API_KEY = "api-key"; //enter api key you wana use in frontend
+const API_KEY = "API KEY"; //enter api key you wana use in frontend
 
 function doGet(e) {
   if (!e || e.parameter.apiKey !== API_KEY || !e.parameter.apidataurl) {
@@ -47,7 +47,6 @@ function doGet(e) {
   ).setMimeType(ContentService.MimeType.JSON);
 }
 
-
 function doPost(e) {
   try {
     const params = JSON.parse(e.postData.contents);
@@ -60,7 +59,6 @@ function doPost(e) {
     }
 
     const ss = SpreadsheetApp.openByUrl(params.apidataurl);
-   
     const bodyJSON = params;
 
     if (!bodyJSON.sheetName) {
@@ -73,12 +71,47 @@ function doPost(e) {
     }
 
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    const rowData = headers.map(h => bodyJSON[h] || "");
+
+    let newId = '';
+
+    if (bodyJSON.sheetName === "PassBook") {
+      if (!bodyJSON.ID || typeof bodyJSON.ID !== 'string' || bodyJSON.ID.trim() === '') {
+        throw new Error("Missing or invalid 'id' in request body for PassBook sheet.");
+      }
+      newId = bodyJSON.ID.trim();
+    } else {
+      const data = sheet.getRange(2, 1, sheet.getLastRow() - 1, 1).getValues(); // IDs from first column
+
+      // Get the last used ID in the first column
+      let lastId = '';
+      for (let i = data.length - 1; i >= 0; i--) {
+        const id = data[i][0];
+        if (typeof id === 'string' && id.trim() !== '') {
+          lastId = id.trim();
+          break;
+        }
+      }
+
+      // Generate next ID
+      newId = 'ID001'; // fallback
+      if (lastId) {
+        const match = lastId.match(/^([A-Za-z]+)(\d+)$/);
+        if (match) {
+          const prefix = match[1];
+          const number = parseInt(match[2], 10) + 1;
+          const paddedNumber = number.toString().padStart(match[2].length, '0');
+          newId = prefix + paddedNumber;
+        }
+      }
+    }
+
+    // Build rowData starting with the new ID
+    const rowData = [newId, ...headers.slice(1).map(h => bodyJSON[h] || "")];
 
     sheet.appendRow(rowData);
 
     return ContentService.createTextOutput(
-      JSON.stringify({ status: 200, message: "Data added successfully!" })
+      JSON.stringify({ status: 200, message: "Data added successfully!", id: newId })
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     return ContentService.createTextOutput(
@@ -86,3 +119,5 @@ function doPost(e) {
     ).setMimeType(ContentService.MimeType.JSON);
   }
 }
+
+
