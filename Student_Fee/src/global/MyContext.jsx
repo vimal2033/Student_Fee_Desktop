@@ -42,7 +42,7 @@ async function get_student_data() {
     setStudentData(data);
     // setPaymentData(data.PassBook);
     setLoadingoverlystate(false); // Set loading state to false after data is fetched
-    console.log("Student Data:", StudentData);
+    console.log("Student Data:",data);
   } catch (error) {
     console.error("Error:", error);
   }

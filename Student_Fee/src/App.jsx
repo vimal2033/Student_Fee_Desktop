@@ -1,6 +1,5 @@
 
 import './App.css';
-import { useEffect} from 'react';
 import SideNavBar from './components/SideNavBar.jsx';
 import TopHeaderBar from './components/TopHeaderBar.jsx';
 import TopBtns from './components/TopBtns.jsx';

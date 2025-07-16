@@ -17,6 +17,7 @@ const fetchSheetLIst=async () => {
         setSheetList(data.sheets);
         setCurrentSession(data.sheets[0]); // Set default session when component mounts
         get_student_data(data.sheets[0].url); // Fetch student data when component mounts
+       
       //  console.log(data.sheets[0].url);
 setLoadingoverlystate(false); // Set loading state to false after data is fetched
     } catch (error) {
@@ -26,9 +27,9 @@ setLoadingoverlystate(false); // Set loading state to false after data is fetche
 }
 
 useEffect(() => {
-  fetchSheetLIst(); // Fetch sheet list when component mounts
+  // fetchSheetLIst(); // Fetch sheet list when component mounts
  
-  
+   get_student_data(); // Fetch student data when component mounts
     sheetList? setCurrentSession(sheetList[0]):setCurrentSession(null) // Set default session when component mounts
 }, [])
   if (!showYearDropdown) return null;
