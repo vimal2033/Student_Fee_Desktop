@@ -28,28 +28,23 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
 
   
 //get student data
-async function get_student_data(apidataurl) {
-  // console.log("API URL:", apidataurl);
-  const url = import.meta.env.VITE_API_URL + 
-  "?apiKey=" + import.meta.env.VITE_API_KEY + 
-  "&apidataurl=" + encodeURIComponent(apidataurl);
-
+async function get_student_data() {
+  const url = import.meta.env.VITE_API_STUDENTURL + "/getAllStudentProfiles";
   try {
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": import.meta.env.VITE_API_admintoken
+      }
+    });
     const data = await response.json();
-    // console.log("GET Response:", data);
-     setStudentData(data.STD);
-    setPaymentData(data.PassBook);
+    setStudentData(data);
+    // setPaymentData(data.PassBook);
     setLoadingoverlystate(false); // Set loading state to false after data is fetched
- 
-    //  setSheetList(data.FolderSheets);
-    // console.log("Student Data:",StudentData);
-    // console.log("Payment Data:",paymentData);
-  
-    // document.getElementById("app").textContent = JSON.stringify(data[0].data[0].name);
+    console.log("Student Data:", StudentData);
   } catch (error) {
     console.error("Error:", error);
-    
   }
 }
 

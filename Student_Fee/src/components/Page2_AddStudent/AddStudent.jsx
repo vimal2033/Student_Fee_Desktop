@@ -21,12 +21,12 @@ const AddStudent = (props) => {
     setPhone(value);
   };
 
-  const handleAddStudent = () => {
+  const handleAddStudent = async () => {
     const name = document.querySelector('input[type="text"]').value.trim();
     const course = document.querySelector('select').value.trim();
     const university = document.querySelectorAll('select')[1].value.trim();
     const address = document.querySelector('textarea').value.trim();
-
+    
     // Regular expression for validating mobile number
     const phoneRegex = /^[0-9]{10}$/;
 
@@ -37,14 +37,15 @@ const AddStudent = (props) => {
         return;
       }
 // console.log(currentSession);
-      submit_Student_Details(name, phone, address, course, university,currentSession.url);
+     const DataSubmitted = await submit_Student_Details(name, phone, address, course, university);
       // console.log("Data submitted successfully");
-
+      if(DataSubmitted.status === 200){
       fill_blank_student();
       addAlert("Success! Your changes have been saved.", "bg-green-500");
-      setTimeout(() => {get_student_data(currentSession.url);}, 500);
-      setTimeout(() => {get_student_data(currentSession.url);}, 5000);
+      // get_student_data(currentSession);
+      get_student_data();
       setTimeout(() => { removeAlert(0); }, 3000);
+      }
       
     } else {
       addAlert("Failed! Please enter all the details correctly.", "bg-red-500");

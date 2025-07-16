@@ -36,7 +36,6 @@ const fillblank=()=>{
       fillblank();
       setInput(prevState => ({ ...prevState, Name: "", Amount: "" }));
       setTimeout(() => {get_student_data(currentSession.url);}, 500);
-      setTimeout(() => {get_student_data(currentSession.url);}, 5000);
     } else {
       addAlert("Failed! Please enter all the details correctly.", "bg-red-500");
       setTimeout(() => { removeAlert(0); }, 3000);

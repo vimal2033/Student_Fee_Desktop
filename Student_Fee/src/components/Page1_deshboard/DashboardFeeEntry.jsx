@@ -22,7 +22,7 @@ const DashboardFeeEntry = (props) => {
     Balance:"0"
     }));
 
-    props.setTitle("Dashboard"); // ✅ Updates title after mount
+    props.setTitle("Dashboard"); // Updates title after mount
   }, [props.setTitle]);
   // props.setTitle("Fee Entry");
 

@@ -8,10 +8,10 @@ const {StudentData}=useMyContext();
 const TotalStudentNumber = StudentData?.length;
 let TotalFeeReceived = 0;
 if (StudentData?.length > 0) {
-console.log(StudentData);
+// console.log(StudentData);
   for (let i = 0; i < StudentData.length; i++) {
     TotalFeeReceived =Number(TotalFeeReceived)+ Number(StudentData[i][tableHeaders.headerFeePaid]);
-  console.log(StudentData[i][tableHeaders.headerFeePaid]);
+  // console.log(StudentData[i][tableHeaders.headerFeePaid]);
   }
 } else {
    TotalFeeReceived = 0;
