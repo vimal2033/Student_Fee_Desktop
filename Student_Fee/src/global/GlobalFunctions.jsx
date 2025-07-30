@@ -19,11 +19,11 @@ export const tableHeaders = {
                                   headerAdmissionDate:"studentAdmmissionDate",
                                   headerCourseDuration:"studentCourseDuration",
                                   //passbook fields
-                              paymentId:"ID",
-                              paymentName:"NAME",
-                              paymentCourse:"COURSE",
-                              paymentDate:"DATE",
-                              paymentFeeRecived:"FEE_RECIVED"
+                              paymentId:"studentRollNo",
+                              paymentName:"studentName",
+                              paymentCourse:"studentClass",
+                              paymentDate:"paymentDate",
+                              paymentFeeRecived:"paymentAmount"
 
                                
                               };
@@ -43,36 +43,62 @@ export const setToday=()=>{
 
   
 //sending payment deta
-  export const submit_Payment = (id, name, course, fee, date,currenturl) => {
-    // console.log(currenturl);
-    const url = import.meta.env.VITE_API_URL;
+  export const submit_Payment = async (fee, date) => {
+
+    //sending payment details to backend
+    const url = import.meta.env.VITE_API_STUDENTURL + "/createPaymentRecord";
+    //for updating payment details in student profile
+    const url2 = import.meta.env.VITE_API_STUDENTURL + "/updateStudentProfile/";
+
     const payload = {
-      apiKey: import.meta.env.VITE_API_KEY,
-      apidataurl: currenturl,
-      sheetName: "PassBook",
-      [tableHeaders.paymentId]: id,
-      [tableHeaders.paymentName]: name,
-      [tableHeaders.paymentCourse]: course,
+      AdminId: "687f88ecaa473bcbc6ec8cd4",
+      studentId: "687fad246a682ee6c5c25c80",
       [tableHeaders.paymentFeeRecived]: fee,
-      DATE: date,
+      paymentMethod: "Online",
+      paymentStatus: "Completed",
+      paymentDate: date
     };
-  
-    fetch(url, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json",
-        
-      },
-      body: JSON.stringify(payload),
-    });
-  
-    // No .then/.catch because you won't get a visible response in no-cors mode.
-    // console.log("Payment submission triggered (no-cors).");
+      const payload2 = {
+            [tableHeaders.paymentFeeRecived]:fee
+      }
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": import.meta.env.VITE_API_admintoken
+        },
+        body: JSON.stringify(payload),
+      });
+      //----------- Update student profile with new payment details
+      const response2 = await fetch(url2+payload.studentId, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": import.meta.env.VITE_API_admintoken
+        },
+        body: JSON.stringify(payload[tableHeaders.paymentFeeRecived]),
+      });
+      //-----------
+
+      let data;
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        data = await response.json();
+      } else {
+        data = await response.text();
+      }
+      console.log({ status: response.status, data });
+      return { status: response.status, data };
+    } catch (error) {
+      console.error("Payment Error:", error);
+      return { status: "error", data: error.toString() };
+    }
   };
+
   
-  //submit student details with try-catch and response handling
-  export const submit_Student_Details = async (name, phone, address, course, university) => {
+  //submit student details for creating new student profile with try-catch and response handling
+  export const submit_Student_Details = async (newRollNo,name, phone, address, course, university) => {
     const url = import.meta.env.VITE_API_STUDENTURL + "/createStudentProfile";
     console.log("Submitting student details to:", url);
     try {
@@ -87,17 +113,17 @@ export const setToday=()=>{
           
           [tableHeaders.headerName]: name,
           [tableHeaders.headerPhone]: phone,
-          [tableHeaders.headerEmail]: "abc@gmail.com", //**** to be MODIFIED
+          // [tableHeaders.headerEmail]: "abc@gmail.com", //**** to be MODIFIED
           [tableHeaders.headerAddress]: address,
           [tableHeaders.headerCourse]: course,
-          [tableHeaders.headerId]: "TCAD001", //****  TO BE MODIFIED
-          [tableHeaders.headerImg]: "https://example.com/image.jpg", //****  TO BE MODIFIED
+          [tableHeaders.headerId]: newRollNo, //****  TO BE MODIFIED
+          // [tableHeaders.headerImg]: "https://example.com/image.jpg", //****  TO BE MODIFIED
           [tableHeaders.headerTotalFee]: "10000", //****  TO BE MODIFIED
           // [tableHeaders.headerFeeStatus]:"unpaid", //will set by default automatically in backend
           [tableHeaders.headerAdmissionDate]: setToday(), //****  TO BE MODIFIED for past date
           [tableHeaders.headerUniversity]: university,
           [tableHeaders.headerCourseDuration]: "6 Months", //****  TO BE MODIFIED
-          [tableHeaders.headerFeePaid]: "2000", //****  TO BE MODIFIED
+          // [tableHeaders.headerFeePaid]: "0", //WILL SET "0" BY DEFAULT IN BACKEND FOR INITIAL PROFILE CREATION
         })
       });
 
@@ -109,7 +135,6 @@ export const setToday=()=>{
       } else {
         data = await response.text();
       }
-      console.log("Response:", data);
       return {status: response.status, data: data};
     } catch (error) {
       console.error("Error:", error);

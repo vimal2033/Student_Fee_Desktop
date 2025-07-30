@@ -9,29 +9,38 @@ const {setLoadingoverlystate,setCurrentSession,sheetList,setSheetList,get_studen
 
 const fetchSheetLIst=async () => {
   setLoadingoverlystate(true); // Set loading state to true while fetching data
-    const url = import.meta.env.VITE_API_DATA_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
-    try {
-        const response = await fetch(url, { method: "GET" });
-        const data = await response.json();
-        // console.log("GET Response:", data);
-        setSheetList(data.sheets);
-        setCurrentSession(data.sheets[0]); // Set default session when component mounts
-        get_student_data(data.sheets[0].url); // Fetch student data when component mounts
+//     const url = import.meta.env.VITE_API_DATA_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
+//     try {
+//         const response = await fetch(url, { method: "GET" });
+//         const data = await response.json();
+//         // console.log("GET Response:", data);
+//         setSheetList(data.sheets);
+//         setCurrentSession(data.sheets[0]); // Set default session when component mounts
+//         get_student_data(data.sheets[0].url); // Fetch student data when component mounts
        
-      //  console.log(data.sheets[0].url);
-setLoadingoverlystate(false); // Set loading state to false after data is fetched
-    } catch (error) {
-        console.error("Error:", error);
-        setLoadingoverlystate(false); // Set loading state to false in case of error
-    }
+//       //  console.log(data.sheets[0].url);
+// setLoadingoverlystate(false); // Set loading state to false after data is fetched
+//     } catch (error) {
+//         console.error("Error:", error);
+//         setLoadingoverlystate(false); // Set loading state to false in case of error
+//     }
 }
-
 useEffect(() => {
-  // fetchSheetLIst(); // Fetch sheet list when component mounts
- 
-   get_student_data(); // Fetch student data when component mounts
-    sheetList? setCurrentSession(sheetList[0]):setCurrentSession(null) // Set default session when component mounts
-}, [])
+  const fetchData = async () => {
+    const studentRes = await get_student_data();
+
+    if (studentRes?.status === "success") {
+        const currentYear = new Date().getFullYear();
+        const nextYear = currentYear + 1;
+        const sessionName = `${currentYear}-${nextYear}`;
+        setCurrentSession(sessionName);
+      
+    }
+  };
+
+  fetchData();
+}, []);
+
   if (!showYearDropdown) return null;
 
   return ReactDOM.createPortal(

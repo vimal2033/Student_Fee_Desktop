@@ -206,6 +206,16 @@ router.delete("/deletePaymentRecord/:id", fetchuser, async (req, res) => {
     }
 });
 
+//route to fetch all payment records api/student/getAllPaymentRecords
+router.get("/getAllPaymentRecords", fetchuser, async (req, res) => {
+    try {
+        const paymentRecords = await PaymentDetails.find({ AdminId: req.user.userId }).populate('studentId', 'studentName studentRollNo studentClass');
+        res.json(paymentRecords);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 
     module.exports = router; // Export the router to be used in the main app

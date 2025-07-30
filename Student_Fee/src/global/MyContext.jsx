@@ -40,13 +40,49 @@ async function get_student_data() {
     });
     const data = await response.json();
     setStudentData(data);
-    // setPaymentData(data.PassBook);
+    get_payment_data(); // Fetch payment data after student data is fetched
     setLoadingoverlystate(false); // Set loading state to false after data is fetched
-    console.log("Student Data:",data);
+    console.log("Student Data:", data);
+    return { data, status: response.status };
   } catch (error) {
     console.error("Error:", error);
+    return { data: null, status: "error" };
   }
 }
+//get student payment data
+async function get_payment_data() {
+  const url = import.meta.env.VITE_API_STUDENTURL + "/getAllPaymentRecords/";
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": import.meta.env.VITE_API_admintoken
+      }
+    });
+
+    const data = await response.json();
+    setPaymentData(data);
+    console.log("Payment Data:", data);
+
+    // Return both data and status
+    return {
+      status: response.status,
+      data: data
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    // You can return an error object or throw again
+    return {
+      status: 500,
+      data: null,
+      error: error.message
+    };
+  }
+}
+
+
 
 //for alert massage
 const [alerts, setAlerts] = useState([]);

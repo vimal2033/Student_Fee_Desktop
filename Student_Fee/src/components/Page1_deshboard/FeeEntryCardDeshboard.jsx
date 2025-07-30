@@ -27,15 +27,22 @@ const fillblank=()=>{
     }));
 }
 
- const handleSubmitPayment = () => {
+ const handleSubmitPayment = async () => {
     if (Input.Name.trim() !== "" && Input.Id.trim() !== "" && Input.Amount.trim()!=="") {
       // console.log(currentSession.url)
-      submit_Payment(Input.Id, Input.Name, Input.Course, Input.Amount, Input.Date,currentSession.url);
-      addAlert("Success! Your changes have been saved.", "bg-green-500");
-      setTimeout(() => { removeAlert(0); }, 3000);
-      fillblank();
-      setInput(prevState => ({ ...prevState, Name: "", Amount: "" }));
-      setTimeout(() => {get_student_data(currentSession.url);}, 500);
+      const responce=await submit_Payment( Input.Amount, Input.Date);
+      if (responce.status === 200) {
+        // Update student data after successful payment submission
+        addAlert("Success! Your changes have been saved.", "bg-green-500");
+        setTimeout(() => { removeAlert(0); }, 3000);
+        await get_student_data();
+        fillblank();
+        setInput(prevState => ({ ...prevState, Name: "", Amount: "" }));
+      } else {
+        addAlert("Payment submission failed:", "bg-red-500");
+        // console.error("Payment submission failed:", responce.data);
+      }
+      
     } else {
       addAlert("Failed! Please enter all the details correctly.", "bg-red-500");
       setTimeout(() => { removeAlert(0); }, 3000);
