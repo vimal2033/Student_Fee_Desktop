@@ -16,7 +16,7 @@ export const MyProvider = ({ children }) => {
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
   const [sheetList,setSheetList]=useState([]);  //state for data of all the payments
   const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
 // Filter data based on name and student ID
 const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "") 
@@ -113,7 +113,8 @@ const [dataurl,setdataUrl]=useState("");
                                 tableHeaders,
                                 currentSession, setCurrentSession,
                                 dataurl,setdataUrl,setSheetList,
-                                loadingoverlystate, setLoadingoverlystate
+                                loadingoverlystate, setLoadingoverlystate,
+                                isAuthenticated, setIsAuthenticated
 
                               }}>
       {children}

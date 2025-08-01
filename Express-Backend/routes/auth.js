@@ -59,45 +59,59 @@ router.post(
     }
 );
 
-
-
-//User login authentication ***********************************************
+// User login authentication ***********************************************
 router.post("/login",
   [
-    body("UserEmail").isEmail().withMessage("Invalid email address"), // Validate email
-    body("UserPassword").notEmpty().withMessage("Password is required"), // Validate password
+    // Accept either email or username
+    body("UserPassword").notEmpty().withMessage("Password is required"),
+    body().custom((value, { req }) => {
+      if (!req.body.UserEmail && !req.body.UserName) {
+        throw new Error("Either email or username is required");
+      }
+      return true;
+    })
   ],
-    async (req, res) => {
-        const errors = validationResult(req); // Check for validation errors
-        if (!errors.isEmpty()) {
-        // If there are errors
-        return res.status(400).json({ errors: errors.array() }); // Respond with a 400 status and the errors
-        }
-        
-        const { UserEmail, UserPassword } = req.body; // Destructure email and password from request body
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-        try {
-        // Logic for user
-        let userexist = await User.findOne({ UserEmail }); // Await the result
-        if (!userexist) {
-            return res.status(400).json({ error: "Invalid credentials" }); // Respond with an error if user does not exist
-        }
+    const { UserEmail, UserName, UserPassword } = req.body;
 
-        const passwordCompare = await bcrypt.compare(UserPassword, userexist.UserPassword); // Compare the provided password with the stored hashed password
-        if (!passwordCompare) {
-            return res.status(400).json({ error: "Invalid credentials" }); // Respond with an error if password does not match  
-        }
-        const payloadData={
-            userId: userexist.id, // Use the user ID from the found user    
-        }
-        const authToken = jwt.sign(payloadData, jwt_secret); // Create a JWT token with the user ID
-        res.json({ authToken }); // Create a JWT token with the user ID and respond with it
-        
-        } catch (err) {
-        console.error("Error during login:", err); // Log the error if login fails
-        return res.status(500).json({ error: "Internal server error" }); // Respond with a 500 status
-        }
-    });
+    try {
+      // Find user by email or username
+      let userexist = null;
+
+      if (UserEmail) {
+        userexist = await User.findOne({ UserEmail });
+      } else if (UserName) {
+        userexist = await User.findOne({ UserName });
+      }
+
+      if (!userexist) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+
+      // Check password
+      const passwordCompare = await bcrypt.compare(UserPassword, userexist.UserPassword);
+      if (!passwordCompare) {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+
+      // Generate JWT
+      const payloadData = {
+        userId: userexist.id,
+      };
+      const authToken = jwt.sign(payloadData, jwt_secret);
+      res.json({ authToken });
+
+    } catch (err) {
+      console.error("Error during login:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
 
 //Route to get user details ***********************************
 

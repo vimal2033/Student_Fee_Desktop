@@ -44,21 +44,33 @@ useEffect(() => {
   if (!showYearDropdown) return null;
 
   return ReactDOM.createPortal(
-    <div className="fixed top-16 right-4 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[9999]">
-      <ul className="py-2">
-        {sheetList?.map((session) => (
-          <li
-            key={session.name}
-            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-            onClick={() => {onSelect(session);}} // Call onSelect and close the dropdown
-          >
-            {session.name}
-          </li>
-        ) )}
-      </ul>
-    </div>,
-    document.body // mount dropdown to body to avoid layout issues
-  );
+  <div className="fixed top-16 right-4 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-[9999]">
+    <ul className="py-2">
+      {sheetList?.map((session) => (
+        <li
+          key={session.name}
+          className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          onClick={() => onSelect(session)}
+        >
+          {session.name}
+        </li>
+      ))}
+
+      <li
+        className="px-4 py-2 text-sm text-red-600 hover:bg-red-100 cursor-pointer border-t border-gray-200"
+        onClick={() => {
+          localStorage.removeItem('authToken'); // clear token
+          if (typeof setIsAuthenticated === 'function') setIsAuthenticated(false); // update context if available
+          window.location.href = '/login'; // redirect to login
+        }}
+      >
+        Logout
+      </li>
+    </ul>
+  </div>,
+  document.body
+);
+
 };
 
 export default YearDropdown;
