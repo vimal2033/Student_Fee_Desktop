@@ -28,11 +28,13 @@ Express-Backend/      → Backend API (Express + MongoDB)
 ---
 
 ## ⚡ Quick Start Diagram  
+
 ```mermaid
 graph TD
-A[Frontend - React (Vite)] -->|REST API Calls| B[Backend - Express.js]
-B --> C[MongoDB Database]
-A --> D[Electron Desktop Wrapper]
+A[Frontend-React(Vite)] -->|REST_API_Calls| B[Backend-Express.js]
+B --> C[MongoDB_Database]
+A --> D[Electron_Desktop_Wrapper]
+
 ```
 
 ---
