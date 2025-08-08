@@ -75,13 +75,13 @@ const sortedData = sortOrder === 'newest' ? paymentData.slice().reverse() : paym
                     {new Date(item[tableHeaders.paymentDate]).toLocaleDateString('en-GB')}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">
-                    {item[tableHeaders.paymentId]}
+                    {item["studentId"][tableHeaders.headerId]}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">
-                    {item[tableHeaders.paymentName]}
+                    {item["studentId"][tableHeaders.paymentName]}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900 hidden sm:table-cell">
-                    {item[tableHeaders.paymentCourse]}
+                    {item["studentId"][tableHeaders.paymentCourse]}
                   </td>
                   <td className="px-3 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.paymentFeeRecived])}</td>
                 </tr>

@@ -31,7 +31,7 @@ const {filteredData,paymentData}=useMyContext();
                     <p><strong>University:</strong> {filteredData[0][tableHeaders.headerUniversity]}</p>
                     <p><strong>Total Fee:</strong> {formatCurrency(filteredData[0][tableHeaders.headerTotalFee])}</p>
                     <p><strong>Fee Paid:</strong> {formatCurrency(filteredData[0][tableHeaders.headerFeePaid])}</p>
-                    <p><strong>Balance:</strong> {formatCurrency(filteredData[0][tableHeaders.headerBalance])}</p>
+                    <p><strong>Balance:</strong> {formatCurrency(Number(filteredData[0][tableHeaders.headerTotalFee])-Number(filteredData[0][tableHeaders.headerFeePaid]))}</p>
                   </div>
                 
             </div>:null}

@@ -175,7 +175,7 @@ const SearchStudent = (props) => {
               <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{item[tableHeaders.headerCourse]}</td>
               <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item[tableHeaders.headerTotalFee])}</td>
               <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerFeePaid])}</td>
-              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerBalance])}</td>
+              <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(Number(item[tableHeaders.headerTotalFee])-Number(item[tableHeaders.headerFeePaid])   )}</td>
               <td className="px-4 py-4 text-sm hidden sm:table-cell">
                       <span
                         className={`px-2 py-1 text-xs font-medium rounded-full ${item[tableHeaders.headerBalance]===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}
@@ -202,7 +202,7 @@ const SearchStudent = (props) => {
                 <td className="px-4 py-4 text-sm text-gray-900 hidden sm:table-cell">{formatCurrency(item[tableHeaders.headerTotalFee])}</td>
                 
                 <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerFeePaid])}</td>
-                <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(item[tableHeaders.headerBalance])}</td>
+                 <td className="px-4 py-4 text-sm text-gray-900">{formatCurrency(Number(item[tableHeaders.headerTotalFee])-Number(item[tableHeaders.headerFeePaid])   )}</td>
                 <td className="px-4 py-4 text-sm hidden sm:table-cell">
                     <span
                         className={`px-2 py-1 text-xs font-medium rounded-full ${item[tableHeaders.headerBalance]===0?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800"}`}

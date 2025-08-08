@@ -57,7 +57,7 @@ const autofill=(index)=>{
                                            University: filteredData[index][tableHeaders.headerUniversity],
                                            TotalFee: filteredData[index][tableHeaders.headerTotalFee],
                                            FeePaid: filteredData[index][tableHeaders.headerFeePaid],
-                                          Balance:filteredData[index][tableHeaders.headerBalance]
+                                          Balance:Number(filteredData[index][tableHeaders.headerTotalFee])-Number(filteredData[index][tableHeaders.headerFeePaid])
                                           }));
                                           
    }}

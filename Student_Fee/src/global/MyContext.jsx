@@ -16,7 +16,7 @@ export const MyProvider = ({ children }) => {
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
   const [sheetList,setSheetList]=useState([]);  //state for data of all the payments
   const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
 // Filter data based on name and student ID
 const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "") 
@@ -28,30 +28,72 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
 
   
 //get student data
-async function get_student_data(apidataurl) {
-  // console.log("API URL:", apidataurl);
-  const url = import.meta.env.VITE_API_URL + 
-  "?apiKey=" + import.meta.env.VITE_API_KEY + 
-  "&apidataurl=" + encodeURIComponent(apidataurl);
-
+async function get_student_data() {
+  const url = import.meta.env.VITE_API_STUDENTURL + "/getAllStudentProfiles";
+  //get auth token from local storage
+  const authToken =  localStorage.getItem("authToken");
+  if (!authToken) {
+    console.error("authantication error");
+    return { data: null, status: "error" };
+  }
   try {
-    const response = await fetch(url, { method: "GET" });
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": authToken
+      }
+    });
     const data = await response.json();
-    // console.log("GET Response:", data);
-     setStudentData(data.STD);
-    setPaymentData(data.PassBook);
+    setStudentData(data);
+    get_payment_data(); // Fetch payment data after student data is fetched
     setLoadingoverlystate(false); // Set loading state to false after data is fetched
- 
-    //  setSheetList(data.FolderSheets);
-    // console.log("Student Data:",StudentData);
-    // console.log("Payment Data:",paymentData);
-  
-    // document.getElementById("app").textContent = JSON.stringify(data[0].data[0].name);
+    console.log("Student Data:", data);
+    return { data, status: response.status };
   } catch (error) {
     console.error("Error:", error);
-    
+    return { data: null, status: "error" };
   }
 }
+//get student payment data
+async function get_payment_data() {
+  const url = import.meta.env.VITE_API_STUDENTURL + "/getAllPaymentRecords/";
+//get auth token from local storage
+  const authToken =  localStorage.getItem("authToken");
+  if (!authToken) {
+    console.error("Authentication error");
+    return { data: null, status: "error" };
+  }
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": authToken
+      }
+    });
+
+    const data = await response.json();
+    setPaymentData(data);
+    console.log("Payment Data:", data);
+
+    // Return both data and status
+    return {
+      status: response.status,
+      data: data
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    // You can return an error object or throw again
+    return {
+      status: 500,
+      data: null,
+      error: error.message
+    };
+  }
+}
+
+
 
 //for alert massage
 const [alerts, setAlerts] = useState([]);
@@ -82,7 +124,8 @@ const [dataurl,setdataUrl]=useState("");
                                 tableHeaders,
                                 currentSession, setCurrentSession,
                                 dataurl,setdataUrl,setSheetList,
-                                loadingoverlystate, setLoadingoverlystate
+                                loadingoverlystate, setLoadingoverlystate,
+                                isAuthenticated, setIsAuthenticated
 
                               }}>
       {children}
