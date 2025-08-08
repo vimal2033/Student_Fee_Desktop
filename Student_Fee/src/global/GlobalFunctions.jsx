@@ -49,7 +49,12 @@ export const setToday=()=>{
     const url = import.meta.env.VITE_API_STUDENTURL + "/createPaymentRecord";
     //for updating payment details in student profile
     const url2 = import.meta.env.VITE_API_STUDENTURL + "/updateStudentProfile/";
-
+    //get auth token from local storage
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      console.error("Authentication error");
+      return { data: null, status: "error" };
+    }
     const payload = {
       AdminId: "687f88ecaa473bcbc6ec8cd4",
       studentId: "687fad246a682ee6c5c25c80",
@@ -66,7 +71,7 @@ export const setToday=()=>{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": import.meta.env.VITE_API_admintoken
+          "auth-token": authToken
         },
         body: JSON.stringify(payload),
       });
@@ -75,7 +80,7 @@ export const setToday=()=>{
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": import.meta.env.VITE_API_admintoken
+          "auth-token": authToken
         },
         body: JSON.stringify(payload[tableHeaders.paymentFeeRecived]),
       });
@@ -100,13 +105,19 @@ export const setToday=()=>{
   //submit student details for creating new student profile with try-catch and response handling
   export const submit_Student_Details = async (newRollNo,name, phone, address, course, university) => {
     const url = import.meta.env.VITE_API_STUDENTURL + "/createStudentProfile";
-    console.log("Submitting student details to:", url);
+    // console.log("Submitting student details to:", url);
+    //get auth token from local storage
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      console.error("Authentication error");
+      return { data: null, status: "error" };
+    }
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": import.meta.env.VITE_API_admintoken
+          "auth-token": authToken
         },
         body: JSON.stringify({
          

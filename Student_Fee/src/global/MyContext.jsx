@@ -30,12 +30,18 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
 //get student data
 async function get_student_data() {
   const url = import.meta.env.VITE_API_STUDENTURL + "/getAllStudentProfiles";
+  //get auth token from local storage
+  const authToken =  localStorage.getItem("authToken");
+  if (!authToken) {
+    console.error("authantication error");
+    return { data: null, status: "error" };
+  }
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": import.meta.env.VITE_API_admintoken
+        "auth-token": authToken
       }
     });
     const data = await response.json();
@@ -52,13 +58,18 @@ async function get_student_data() {
 //get student payment data
 async function get_payment_data() {
   const url = import.meta.env.VITE_API_STUDENTURL + "/getAllPaymentRecords/";
-
+//get auth token from local storage
+  const authToken =  localStorage.getItem("authToken");
+  if (!authToken) {
+    console.error("Authentication error");
+    return { data: null, status: "error" };
+  }
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "auth-token": import.meta.env.VITE_API_admintoken
+        "auth-token": authToken
       }
     });
 

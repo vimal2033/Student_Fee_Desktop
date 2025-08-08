@@ -50,27 +50,30 @@ setLoadingoverlystate(true); // Set loading state to true
           
           </span>
         </div>
+        {/* //*****************************WILL BE ADDED AGAIN LETER*************** */ }
             {/* ******************************* */}
             {/* <!-- page title  --> */}
             <h1 className="text-xl font-semibold text-gray-900">{deshboardTitle}</h1>
             {/* <!-- user profile --> */}
             <div className="flex items-center">
-              <button className="flex items-center text-sm font-medium text-gray-700 drop-shadow-md"
-                onClick={() => setShowYear(!showYear)}>   {/*  Toggle dropdown visibility */}
-                <img src={profileImgUrl}
+              {/* <button className="flex items-center text-sm font-medium text-gray-700 drop-shadow-md"
+                onClick={() => setShowYear(!showYear)}>    */}
+                {/*  Toggle dropdown visibility */}
+                {/* <img src={profileImgUrl}
                   alt="" className="w-8 h-8 rounded-full mr-2 "/>
-                <span>{currentSession?currentSession.name:""}</span>
+                <span>{currentSession?currentSession:""}</span>
                 <i className="fas fa-chevron-down ml-2 text-gray-400"></i>
-              </button>
+              </button> */}
 
 {/* ************************* */}
 
-<YearDropdown showYearDropdown={showYear} onSelect={handleSessionSelect}/>
+{/* <YearDropdown showYearDropdown={showYear} onSelect={handleSessionSelect}/> */}
 
 {/* ******************************* */}
 
             </div> 
             {/* <!-- user profile div close --> */}
+            
           </div>
             {/* <!-- header div close --> */}
         </header>
