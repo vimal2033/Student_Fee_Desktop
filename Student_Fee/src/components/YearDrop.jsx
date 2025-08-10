@@ -5,27 +5,26 @@ import { useMyContext } from '../global/MyContext';
 
 const YearDropdown = ({ showYearDropdown, onSelect }) => {
 
-const {setLoadingoverlystate,setCurrentSession,sheetList,setSheetList,get_student_data} = useMyContext();
+const {setLoadingoverlystate,setCurrentSession,get_student_data,StudentData,setAllStudentData} = useMyContext();
 
-const sessionList = ["2023-24", "2024-25", "2025-26"]; // Example session list
+// get the list of sessions from student data 
+// get the admition year from the student data
+// and set the range of sessions accordingly
+
+const sessionList = Array.from(
+  new Set(
+    StudentData.map(student => {
+      const date = new Date(student.studentAdmmissionDate);
+      const year = date.getFullYear();
+      const nextYearShort = String(year + 1).slice(-2); // last 2 digits
+      return `${year}-${nextYearShort}`;
+    })
+  )
+).sort((a, b) => b.localeCompare(a)); // sort descending
+
 
 const fetchSheetLIst=async () => {
-  setLoadingoverlystate(true); // Set loading state to true while fetching data
-  //     const url = import.meta.env.VITE_API_DATA_URL+"?apiKey="+import.meta.env.VITE_API_KEY;
-  //     try {
-  //         const response = await fetch(url, { method: "GET" });
-  //         const data = await response.json();
-  //         // console.log("GET Response:", data);
-  //         setSheetList(data.sheets);
-  //         setCurrentSession(data.sheets[0]); // Set default session when component mounts
-  //         get_student_data(data.sheets[0].url); // Fetch student data when component mounts
-        
-  //       //  console.log(data.sheets[0].url);
-  // setLoadingoverlystate(false); // Set loading state to false after data is fetched
-  //     } catch (error) {
-  //         console.error("Error:", error);
-  //         setLoadingoverlystate(false); // Set loading state to false in case of error
-  //     }
+  
 }
 useEffect(() => {
   const fetchData = async () => {
