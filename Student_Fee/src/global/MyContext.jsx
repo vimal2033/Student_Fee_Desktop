@@ -13,8 +13,8 @@ export const MyProvider = ({ children }) => {
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
   
   const [StudentData,setStudentData]=useState([]);  //state for data of all the students
+  const [allStudetData,setAllStudentData]=useState([]);  //copy for data of all the students if student data is filtered
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
-  const [sheetList,setSheetList]=useState([]);  //state for data of all the payments
   const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
@@ -116,16 +116,17 @@ const [dataurl,setdataUrl]=useState("");
 //for loading screen
  const [loadingoverlystate, setLoadingoverlystate] = useState(false);
   return (
-    <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,sheetList,
+    <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
                                 get_student_data,Input,setInput,filteredData,
                                 alerts, addAlert, removeAlert,
                                 highlightedIndex, setHighlightedIndex,
                                 deshboardTitle, setDeshboardTitle,
                                 tableHeaders,
                                 currentSession, setCurrentSession,
-                                dataurl,setdataUrl,setSheetList,
+                                dataurl,setdataUrl,
                                 loadingoverlystate, setLoadingoverlystate,
-                                isAuthenticated, setIsAuthenticated
+                                isAuthenticated, setIsAuthenticated,
+                                allStudetData,setAllStudentData
 
                               }}>
       {children}
