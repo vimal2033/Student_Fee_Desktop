@@ -120,7 +120,7 @@ Run **both frontend (or Electron app)** and **backend server** before using the 
 ---
 
 ## 🛠 Tech Stack
-- **Frontend:** React (Vite), Tailwind CSS *(optional if used)*
+- **Frontend:** React (Vite), Tailwind CSS 
 - **Backend:** Express.js, Node.js
 - **Database:** MongoDB
 - **Desktop Integration:** Electron.js
