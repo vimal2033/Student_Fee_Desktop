@@ -103,7 +103,7 @@ export const setToday=()=>{
 
   
   //submit student details for creating new student profile with try-catch and response handling
-  export const submit_Student_Details = async (newRollNo,name, phone, address, course, university) => {
+  export const submit_Student_Details = async (newRollNo,name, phone, address, course, university,addmission,duration,emailvalue) => {
     const url = import.meta.env.VITE_API_STUDENTURL + "/createStudentProfile";
     // console.log("Submitting student details to:", url);
     //get auth token from local storage
@@ -124,16 +124,16 @@ export const setToday=()=>{
           
           [tableHeaders.headerName]: name,
           [tableHeaders.headerPhone]: phone,
-          // [tableHeaders.headerEmail]: "abc@gmail.com", //**** to be MODIFIED
+          [tableHeaders.headerEmail]: emailvalue, 
           [tableHeaders.headerAddress]: address,
           [tableHeaders.headerCourse]: course,
-          [tableHeaders.headerId]: newRollNo, //****  TO BE MODIFIED
-          // [tableHeaders.headerImg]: "https://example.com/image.jpg", //****  TO BE MODIFIED
-          [tableHeaders.headerTotalFee]: "10000", //****  TO BE MODIFIED
+          [tableHeaders.headerId]: newRollNo, //****  TO BE MODIFIED FOR PREFIX
+          // [tableHeaders.headerImg]: "https://example.com/image.jpg", //****  TO BE MODIFIED FEATURE NOT ADDED YET
+          [tableHeaders.headerTotalFee]: "10000", //****  TO BE MODIFIED TO SET BY COURSE
           // [tableHeaders.headerFeeStatus]:"unpaid", //will set by default automatically in backend
-          [tableHeaders.headerAdmissionDate]: setToday(), //****  TO BE MODIFIED for past date
+          [tableHeaders.headerAdmissionDate]: addmission, 
           [tableHeaders.headerUniversity]: university,
-          [tableHeaders.headerCourseDuration]: "6 Months", //****  TO BE MODIFIED
+          [tableHeaders.headerCourseDuration]: duration, 
           // [tableHeaders.headerFeePaid]: "0", //WILL SET "0" BY DEFAULT IN BACKEND FOR INITIAL PROFILE CREATION
         })
       });

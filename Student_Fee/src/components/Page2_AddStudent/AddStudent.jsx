@@ -1,18 +1,20 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom';
 import { submit_Student_Details } from '../../global/GlobalFunctions.jsx';
 import AlertDismissible from '../AlertDismissible.jsx';
 import { useMyContext } from '../../global/MyContext.jsx';
+import Loadingoverlay from '../LoadingScreen.jsx';
 
 const AddStudent = (props) => {
 
   useEffect(() => {
-    props.setTitle("Add Student"); // ✅ Updates title after mount
+    props.setTitle("Add Student"); //  Updates title after mount
   }, [props.setTitle]);
-  
-  const { addAlert, removeAlert } = useMyContext(); //to access alert functions and show alerts
+
+  // Use loading state from context instead of local state
+  const { addAlert, removeAlert, loadingoverlystate, setLoadingoverlystate } = useMyContext();
   // Accessing context to get StudentData and setStudentData
-  const {StudentData,setStudentData,currentSession}=useMyContext(); 
+  const { StudentData, setStudentData, currentSession } = useMyContext();
   // State for phone number input
   const [phone, setPhone] = useState("");
   const handlePhoneChange = (e) => {
@@ -20,25 +22,53 @@ const AddStudent = (props) => {
     setPhone(value);
   };
 
+  // Add state for admission date and course duration
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+  const [admissionDate, setAdmissionDate] = useState(getTodayDate());
+  const [courseDuration, setCourseDuration] = useState("");
+  // Add state for email
+  const [email, setEmail] = useState("");
+
   const handleAddStudent = async () => {
+    setLoadingoverlystate(true); // Show loading screen from context
     const name = document.querySelector('input[type="text"]').value.trim();
     const course = document.querySelector('select').value.trim();
     const university = document.querySelectorAll('select')[1].value.trim();
     const address = document.querySelector('textarea').value.trim();
-    
+    const admission = admissionDate;
+    const duration = courseDuration;
+    const emailValue = email.trim();
+
     // Regular expression for validating mobile number
     const phoneRegex = /^[0-9]{10}$/;
+    // Regular expression for validating email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (name !== "" && course !== ""  && phone !== "" && address !== "") {
+    if (
+      name !== "" &&
+      course !== "" &&
+      phone !== "" &&
+      address !== "" &&
+      admission !== "" &&
+      duration !== "" &&
+      emailValue !== ""
+    ) {
       if (!phoneRegex.test(phone)) {
         addAlert("Failed! Please enter a valid 10-digit mobile number.", "bg-red-500");
         setTimeout(() => { removeAlert(0); }, 3000);
+        setLoadingoverlystate(false);
         return;
       }
-// console.log(currentSession);
-//get the maximul roll number from StudentData and increment it for new student
-//where we have first three letters as prefix and then a number e.g. "TCAD001","TCAD002", etc.
-      const rollnoPrefix = "TCAD"; // Prefix for roll number
+      if (!emailRegex.test(emailValue)) {
+        addAlert("Failed! Please enter a valid email address.", "bg-red-500");
+        setTimeout(() => { removeAlert(0); }, 3000);
+        setLoadingoverlystate(false);
+        return;
+      }
+      const rollnoPrefix = "TCAD";
       let maxRollNo = 0;
       StudentData.forEach(student => {
         if (student.studentRollNo.startsWith(rollnoPrefix)) {
@@ -48,39 +78,39 @@ const AddStudent = (props) => {
           }
         }
       });
-      const newRollNo = `${rollnoPrefix}${String(maxRollNo + 1).padStart(3, '0')}`; // Incremented roll number
-//sending data to backend for creating new student profile
-     const DataSubmitted = await submit_Student_Details(newRollNo,name, phone, address, course, university);
-      if(DataSubmitted.status === 200){
-        //if the response is successful, add the new student profile to StudentData
-      console.log("Response:", DataSubmitted.data);
-      // Update StudentData state with the new student profile
+      const newRollNo = `${rollnoPrefix}${String(maxRollNo + 1).padStart(3, '0')}`;
+      const DataSubmitted = await submit_Student_Details(newRollNo, name, phone, address, course, university, admission, duration, emailValue);
+      if (DataSubmitted.status === 200) {
+        console.log("Response:", DataSubmitted.data);
         await setStudentData(prev => [...prev, DataSubmitted.data]);
-        //after successful submission, clear the form fields
-      fill_blank_student();
-      // Show success alert
-      addAlert("Success! Your changes have been saved.", "bg-green-500");
-      setTimeout(() => { removeAlert(0); }, 3000);
+        fill_blank_student();
+        addAlert("Success! Your changes have been saved.", "bg-green-500");
+        setTimeout(() => { removeAlert(0); }, 3000);
       }
+      setLoadingoverlystate(false);
     } else {
-      // Show error alert if any field is empty
       addAlert("Failed! Please enter all the details correctly.", "bg-red-500");
       setTimeout(() => { removeAlert(0); }, 3000);
+      setLoadingoverlystate(false);
     }
   };
   // Function to clear the form fields
-  const fill_blank_student=()=>{
-      // Clear the add student form fields
-      document.querySelector('input[type="text"]').value = "";
-      document.querySelector('select').value = "";
-      document.querySelectorAll('select')[1].value = "";
-      setPhone("");
-      document.querySelector('textarea').value = "";
+  const fill_blank_student = () => {
+    // Clear the add student form fields
+    document.querySelector('input[type="text"]').value = "";
+    document.querySelector('select').value = "";
+    document.querySelectorAll('select')[1].value = "";
+    setPhone("");
+    document.querySelector('textarea').value = "";
+    setAdmissionDate(getTodayDate());
+    setCourseDuration("");
+    setEmail("");
   }
 
   return (
     <>
       <AlertDismissible />
+      {loadingoverlystate && <Loadingoverlay message="Submitting, please wait..." />}
       <div className="bg-white rounded-lg border border-gray-200 p-6 drop-shadow-md">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
           Student Information
@@ -90,7 +120,7 @@ const AddStudent = (props) => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
               <input type="text" className="!rounded-button  w-full  border-gray-300 border p-2 drop-shadow-sm"
-              placeholder="Enter the full name" />
+                placeholder="Enter the full name" />
             </div>
 
             <div>
@@ -101,7 +131,7 @@ const AddStudent = (props) => {
                 <option value="PGDCA">PGDCA</option>
                 <option value="MDCH">MDCH</option>
                 <option value="TALLY">TALLY</option>
-                <option value="BASIC">BASIC</option> 
+                <option value="BASIC">BASIC</option>
               </select>
             </div>
 
@@ -131,6 +161,40 @@ const AddStudent = (props) => {
               <textarea className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm" rows="1" placeholder="Enter address"></textarea>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
+              <input
+                type="date"
+                className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm"
+                value={admissionDate}
+                onChange={e => setAdmissionDate(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Course Duration (months)</label>
+              <input
+                type="number"
+                min="1"
+                max="60"
+                className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm"
+                placeholder="Enter duration in months"
+                value={courseDuration}
+                onChange={e => setCourseDuration(e.target.value.replace(/[^0-9]/g, '').slice(0, 2))}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm"
+                placeholder="Enter email address"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </div>
+
             <div className="mt-6 flex justify-end space-x-4">
 
               {/* <Link to="/" exact="true" type="button" className="!rounded-button px-4 py-2 bg-gray-500 text-white text-sm font-medium drop-shadow-sm hover:bg-indigo-50 hover:text-gray-700">
@@ -139,12 +203,12 @@ const AddStudent = (props) => {
               </Link> */}
 
               <button type="button" className="!rounded-button px-4 py-2 border border-gray-300 bg-white text-gray-700 text-sm font-medium drop-shadow-sm"
-              onClick={()=>{fill_blank_student();}}>
+                onClick={() => { fill_blank_student(); }}>
                 Clear
               </button>
-              
-              <button type="button" className="!rounded-button px-4 py-2 bg-black cursor-pointer text-white text-sm font-medium drop-shadow-sm" 
-              onClick={()=>{handleAddStudent();}}>
+
+              <button type="button" className="!rounded-button px-4 py-2 bg-black cursor-pointer text-white text-sm font-medium drop-shadow-sm"
+                onClick={() => { handleAddStudent(); }}>
                 Add Student
               </button>
             </div>
