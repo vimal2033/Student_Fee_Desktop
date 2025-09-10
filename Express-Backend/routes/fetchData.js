@@ -24,7 +24,7 @@ router.post(
         }
   
         try {
-        const { studentName, studentphone, studentEmail, studentAddress, studentClass, studentRollNo, studentImage, studentFee } = req.body;
+        const { studentName, studentphone, studentEmail, studentAddress, studentClass, studentRollNo, studentImage, studentFee,studentAdmmissionDate } = req.body;
         const AdminId = await req.user.userId; // Get the admin ID from the authenticated user
    
         const newStudentProfile = new StudentProfiles({
@@ -36,7 +36,8 @@ router.post(
             studentClass,
             studentRollNo,
             studentImage,
-            studentFee
+            studentFee,
+            studentAdmmissionDate
         });
     
         const savedProfile = await newStudentProfile.save();

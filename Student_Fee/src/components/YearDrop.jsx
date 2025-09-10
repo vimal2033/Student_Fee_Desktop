@@ -1,5 +1,5 @@
 // SessionDropdown.jsx
-import React,{useEffect} from 'react';
+import React, { useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useMyContext } from '../global/MyContext';
 
@@ -7,35 +7,34 @@ const YearDropdown = ({ showYearDropdown, onSelect }) => {
 
 const {setLoadingoverlystate,setCurrentSession,get_student_data,StudentData,setAllStudentData} = useMyContext();
 
-// get the list of sessions from student data 
-// get the admition year from the student data
-// and set the range of sessions accordingly
 
-const sessionList = Array.from(
-  new Set(
-    StudentData.map(student => {
-      const date = new Date(student.studentAdmmissionDate);
-      const year = date.getFullYear();
-      const nextYearShort = String(year + 1).slice(-2); // last 2 digits
-      return `${year}-${nextYearShort}`;
-    })
-  )
-).sort((a, b) => b.localeCompare(a)); // sort descending
+              // get the list of sessions from student data 
+              // get the admition year from the student data
+              // and set the range of sessions accordingly
 
+              const sessionList =Array.from(
+                  new Set(
+                      StudentData?.map(student => {
+                      const date = new Date(student.studentAdmmissionDate);
+                      const year = date.getFullYear();
+                      const nextYearShort = String(year + 1).slice(-2); // last 2 digits
+                      return `${year}-${nextYearShort}`;
+                    })
+                  )
+                ).sort((a, b) => b.localeCompare(a)); // sort descending
 
-const fetchSheetLIst=async () => {
-  
-}
 useEffect(() => {
   const fetchData = async () => {
     const studentRes = await get_student_data();
     if (studentRes?.status === 200) {
+      
         const currentYear = new Date().getFullYear();
         const nextYear = currentYear + 1;
         const sessionName = `${currentYear}-${nextYear}`;
         setCurrentSession(sessionName);
-      console.log("Current Session:", sessionName);
-    }
+              
+                    console.log("Current Session:", sessionName);
+                  }
   };
 
   fetchData();
