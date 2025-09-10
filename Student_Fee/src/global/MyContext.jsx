@@ -18,6 +18,14 @@ export const MyProvider = ({ children }) => {
   const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
+   //for current session //set current session according to current year by default
+ const [currentSession, setCurrentSession] = useState( ()=>{
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+  console.log("Initial session set to:", `${currentYear}-${nextYear}`);
+  return `${currentYear}-${nextYear}`;
+ } );
+
 // Filter data based on name and student ID
 const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "") 
   ? StudentData.filter((item) =>
@@ -26,7 +34,7 @@ const filteredData = (Input.Name.trim() !== "" || Input.Id.trim() !== "")
     )
   : [];
 
-  
+  const [allStudetFetchedData,setAllStudentFetchedData]=useState([]); // to store all fetched student data
 //get student data
 async function get_student_data() {
   const url = import.meta.env.VITE_API_STUDENTURL + "/getAllStudentProfiles";
@@ -45,7 +53,17 @@ async function get_student_data() {
       }
     });
     const data = await response.json();
-    setStudentData(data);
+    setAllStudentFetchedData(data);
+    // Filter data based on current session if provided
+    if (currentSession) {
+      const [startYear, endYear] = currentSession.split('-').map(Number);
+      const filteredBySession = data.filter(student => {
+        const admissionYear = new Date(student.studentAdmmissionDate).getFullYear();
+        return admissionYear === startYear || admissionYear === endYear;
+      });
+      setStudentData(filteredBySession);
+    } 
+    // setStudentData(data);
     get_payment_data(); // Fetch payment data after student data is fetched
     setLoadingoverlystate(false); // Set loading state to false after data is fetched
     console.log("Student Data:", data);
@@ -55,6 +73,7 @@ async function get_student_data() {
     return { data: null, status: "error" };
   }
 }
+const [allFechedPaymentData,setAllFetchedPaymentData]=useState([]); // to store all fetched payment data
 //get student payment data
 async function get_payment_data() {
   const url = import.meta.env.VITE_API_STUDENTURL + "/getAllPaymentRecords/";
@@ -74,7 +93,18 @@ async function get_payment_data() {
     });
 
     const data = await response.json();
-    setPaymentData(data);
+    setAllFetchedPaymentData(data);
+      // Filter data based on current session if provided
+      if (currentSession) {
+        const [startYear, endYear] = currentSession.split('-').map(Number);
+        const filteredBySession = data.filter(payment => {
+          const paymentYear = new Date(payment.paymentDate).getFullYear();
+          return paymentYear === startYear || paymentYear === endYear;
+        });
+        setPaymentData(filteredBySession);
+      }
+
+    // setPaymentData(data);
     console.log("Payment Data:", data);
 
     // Return both data and status
@@ -110,8 +140,7 @@ const removeAlert = (index) => {
 const [highlightedIndex, setHighlightedIndex] = useState(0);
 //for deshboard title
 const [deshboardTitle, setDeshboardTitle] = useState("");
- //for current session
- const [currentSession, setCurrentSession] = useState(""); // Default session
+
 const [dataurl,setdataUrl]=useState("");
 //for loading screen
  const [loadingoverlystate, setLoadingoverlystate] = useState(false);
@@ -126,8 +155,9 @@ const [dataurl,setdataUrl]=useState("");
                                 dataurl,setdataUrl,
                                 loadingoverlystate, setLoadingoverlystate,
                                 isAuthenticated, setIsAuthenticated,
-                                allStudetData,setAllStudentData
-
+                                allStudetData,setAllStudentData,
+                                allStudetFetchedData
+                                
                               }}>
       {children}
     </MyContext.Provider>

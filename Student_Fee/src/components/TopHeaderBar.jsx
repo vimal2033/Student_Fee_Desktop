@@ -1,4 +1,4 @@
-import React,{ useState} from 'react'
+import React,{ useEffect, useState} from 'react'
 import { useMyContext } from '../global/MyContext'
 import profileImg from '/images/corporate-user-icon.png'; //import image
 import logo from '/images/icons/icon.svg';  // Import image
@@ -12,13 +12,17 @@ const TopHeaderBar = () => {
   const imageUrl = new URL(logo, import.meta.url).href;
 const [showYear, setShowYear] = useState(false);
 
-const handleSessionSelect = (session) => {
+const handleSessionSelect = async (session) => {
+  if (session === currentSession) {
+    setShowYear(false);
+    return; // No change needed
+  }
 setLoadingoverlystate(true); // Set loading state to true
   setCurrentSession(session); // Update the current session state
   // console.log("Selected session:", currentSession); // Handle the selected session here
   setShowYear(false); // Close the dropdown after selection
   // Handle the selected session here
-  get_student_data(session);
+  // get_student_data();
 
   setInput(prevState => ({ ...prevState, Id: "",
     Name: "", 
@@ -33,6 +37,11 @@ setLoadingoverlystate(true); // Set loading state to true
  addAlert("Session changed", "bg-green-500");
   setTimeout(() => { removeAlert(0); }, 5000);
 }
+
+useEffect(() => {
+  get_student_data();
+  setLoadingoverlystate(false); // Set loading state to false after data is fetched
+}, [currentSession]);
 
 
 

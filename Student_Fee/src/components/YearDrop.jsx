@@ -5,7 +5,7 @@ import { useMyContext } from '../global/MyContext';
 
 const YearDropdown = ({ showYearDropdown, onSelect }) => {
 
-const {setLoadingoverlystate,setCurrentSession,get_student_data,StudentData,setAllStudentData} = useMyContext();
+const {setLoadingoverlystate,setCurrentSession,get_student_data,allStudetFetchedData} = useMyContext();
 
 
               // get the list of sessions from student data 
@@ -14,7 +14,7 @@ const {setLoadingoverlystate,setCurrentSession,get_student_data,StudentData,setA
 
               const sessionList =Array.from(
                   new Set(
-                      StudentData?.map(student => {
+                      allStudetFetchedData?.map(student => {
                       const date = new Date(student.studentAdmmissionDate);
                       const year = date.getFullYear();
                       const nextYearShort = String(year + 1).slice(-2); // last 2 digits
