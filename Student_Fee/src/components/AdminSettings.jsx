@@ -6,26 +6,19 @@ const AdminSettings = (props) => {
         props.setTitle("Settings");
     }, [props.setTitle]);
 
-    const { logo, setLogo, title, setTitle, courses, setCourses } = useMyContext();
+    const { logo, setLogo, title, setTitle, courses, setCourses, universities, setUniversities } = useMyContext();
 
     // Local states for form fields
     const [localLogo, setLocalLogo] = useState(logo);
-    const [localLogoFile, setLocalLogoFile] = useState(null); // for file upload
     const [localTitle, setLocalTitle] = useState(title);
     const [localCourses, setLocalCourses] = useState(courses);
+    const [localUniversities, setLocalUniversities] = useState(universities || [""]);
 
     // Sync local state with context when context changes
     useEffect(() => { setLocalLogo(logo); }, [logo]);
     useEffect(() => { setLocalTitle(title); }, [title]);
     useEffect(() => { setLocalCourses(courses); }, [courses]);
-
-    // Handle logo upload (preview only)
-    const handleLogoChange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            setLocalLogo(URL.createObjectURL(e.target.files[0]));
-            setLocalLogoFile(e.target.files[0]);
-        }
-    };
+    useEffect(() => { setLocalUniversities(universities && universities.length ? universities : [""]); }, [universities]);
 
     // Handle course change (local only)
     const handleCourseChange = (index, field, value) => {
@@ -45,17 +38,31 @@ const AdminSettings = (props) => {
         setLocalCourses(updatedCourses);
     };
 
+    // Handle university change (local only)
+    const handleUniversityChange = (index, value) => {
+        const updatedUniversities = [...localUniversities];
+        updatedUniversities[index] = value;
+        setLocalUniversities(updatedUniversities);
+    };
+
+    // Add new university (local only)
+    const addUniversity = () => {
+        setLocalUniversities([...localUniversities, ""]);
+    };
+
+    // Remove university (local only)
+    const removeUniversity = (index) => {
+        const updatedUniversities = localUniversities.filter((_, i) => i !== index);
+        setLocalUniversities(updatedUniversities.length ? updatedUniversities : [""]);
+    };
+
     // Handle form submit (update context here)
     const handleSubmit = (e) => {
         e.preventDefault();
         setTitle(localTitle);
         setCourses(localCourses);
-        if (localLogoFile) {
-            setLogo(URL.createObjectURL(localLogoFile));
-        } else {
-            setLogo(localLogo);
-        }
-        console.log(courses);
+        setLogo(localLogo);
+        setUniversities(localUniversities.filter(u => u.trim() !== ""));
         setTimeout(() => {
             alert('Settings saved!');
         }, 0);
@@ -65,7 +72,6 @@ const AdminSettings = (props) => {
         <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow mt-8">
             <h2 className="text-2xl font-bold mb-4">Admin Settings</h2>
             <form onSubmit={handleSubmit}>
-                
                 {/* Title */}
                 <div className="mb-4">
                     <label className="block font-semibold mb-1">Institute Title</label>
@@ -123,6 +129,44 @@ const AdminSettings = (props) => {
                     </button>
                 </div>
 
+                {/* Universities */}
+                <div className="mb-4">
+                    <label className="block font-semibold mb-1">Universities</label>
+                    {localUniversities.map((university, idx) => (
+                        <div key={idx} className="flex items-center gap-2 mb-2">
+                            <input
+                                type="text"
+                                className="border rounded px-3 py-2 flex-1"
+                                placeholder="University Name"
+                                value={university}
+                                onChange={(e) => handleUniversityChange(idx, e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                className={`flex items-center justify-center w-9 h-9 rounded-full transition-colors ${
+                                    localUniversities.length === 1
+                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                        : 'bg-red-500 text-white hover:bg-red-600'
+                                }`}
+                                onClick={() => removeUniversity(idx)}
+                                disabled={localUniversities.length === 1}
+                                title="Remove"
+                                style={{ fontSize: '1.5rem', lineHeight: 1 }}
+                            >
+                                &times;
+                            </button>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full mt-1 hover:bg-green-700 transition-colors"
+                        onClick={addUniversity}
+                    >
+                        <span className="text-xl font-bold">+</span>
+                        <span>Add University</span>
+                    </button>
+                </div>
+
                 {/* Logo URL Input */}
                 <div className="mb-4">
                     <label className="block font-semibold mb-1">Logo URL</label>
@@ -132,7 +176,6 @@ const AdminSettings = (props) => {
                         value={localLogo}
                         onChange={(e) => {
                             setLocalLogo(e.target.value);
-                            setLocalLogoFile(null); // Clear file if URL is used
                         }}
                         placeholder="Enter direct image URL (e.g., https://example.com/logo.svg)"
                     />

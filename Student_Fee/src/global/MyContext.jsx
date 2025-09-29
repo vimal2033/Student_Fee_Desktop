@@ -148,6 +148,7 @@ const [dataurl,setdataUrl]=useState("");
    const [logo, setLogo] = useState("https://www.reshot.com/preview-assets/icons/ZBSECWVM5Y/share-ZBSECWVM5Y.svg"); //for main organization logo
    const [title, setTitle] = useState('Title'); //for main organization title
    const [courses, setCourses] = useState([{ name: '', fee: '' }]); //courses offered with fee structure
+   const [universities, setUniversities] = useState([]); //universities associated
   return (
     <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
                                 get_student_data,Input,setInput,filteredData,
@@ -162,7 +163,7 @@ const [dataurl,setdataUrl]=useState("");
                                 allStudetData,setAllStudentData,
                                 allStudetFetchedData,
                                 logo, setLogo,title, setTitle,courses, setCourses
-                                
+                                ,universities, setUniversities
                               }}>
       {children}
     </MyContext.Provider>
