@@ -12,7 +12,7 @@ const AddStudent = (props) => {
   }, [props.setTitle]);
 
   // Use loading state from context instead of local state
-  const { addAlert, removeAlert, loadingoverlystate, setLoadingoverlystate } = useMyContext();
+  const { addAlert, removeAlert, loadingoverlystate, setLoadingoverlystate,courses } = useMyContext();
   // Accessing context to get StudentData and setStudentData
   const { StudentData, setStudentData, currentSession } = useMyContext();
   // State for phone number input
@@ -127,11 +127,10 @@ const AddStudent = (props) => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Course Name</label>
               <select className="!rounded-button w-full border-gray-300 border p-2 drop-shadow-sm">
                 <option value="">Select Course</option>
-                <option value="DCA">DCA</option>
-                <option value="PGDCA">PGDCA</option>
-                <option value="MDCH">MDCH</option>
-                <option value="TALLY">TALLY</option>
-                <option value="BASIC">BASIC</option>
+                {/* map the courses  */}
+                {courses.map((course, index) => (
+                  <option key={index} value={course.name}>{course.name}</option>
+                ))}
               </select>
             </div>
 

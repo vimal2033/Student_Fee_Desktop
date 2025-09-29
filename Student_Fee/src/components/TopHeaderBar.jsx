@@ -1,15 +1,13 @@
 import React,{ useEffect, useState} from 'react'
 import { useMyContext } from '../global/MyContext'
 import profileImg from '/images/corporate-user-icon.png'; //import image
-import logo from '/images/icons/icon.svg';  // Import image
-import { tableHeaders } from '../global/GlobalFunctions';
 import YearDropdown from './YearDrop';
 
 
 const TopHeaderBar = () => {
-  const {setLoadingoverlystate,setInput,deshboardTitle,setCurrentSession,currentSession,get_student_data,addAlert,removeAlert}=useMyContext();
+  const {setLoadingoverlystate,setInput,deshboardTitle,setCurrentSession,currentSession,get_student_data,addAlert,removeAlert,title,logo}=useMyContext();
   const profileImgUrl = new URL(profileImg, import.meta.url).href;
-  const imageUrl = new URL(logo, import.meta.url).href;
+ 
 const [showYear, setShowYear] = useState(false);
 
 const handleSessionSelect = async (session) => {
@@ -54,8 +52,8 @@ useEffect(() => {
             {/* *************************** */}
             <div className="px-6   block  lg:hidden">
           <span className="flex items-center">
-          <img src={imageUrl} alt=" Logo"className="h-8"/>
-          <h1 className="text-xl font-semibold text-gray-900 ml-2">{tableHeaders.Title}</h1>
+          <img src={logo} alt=" Logo"className="h-8"/>
+          <h1 className="text-xl font-semibold text-gray-900 ml-2">{title}</h1>
           
           </span>
         </div>
@@ -76,7 +74,7 @@ useEffect(() => {
 
 {/* ************************* */}
 
-<YearDropdown showYearDropdown={showYear} onSelect={handleSessionSelect}/>
+<YearDropdown showYearDropdown={showYear} setYerDropdown={setShowYear} onSelect={handleSessionSelect}/>
 
 {/* ******************************* */}
 

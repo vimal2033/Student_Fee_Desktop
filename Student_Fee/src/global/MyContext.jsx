@@ -144,6 +144,10 @@ const [deshboardTitle, setDeshboardTitle] = useState("");
 const [dataurl,setdataUrl]=useState("");
 //for loading screen
  const [loadingoverlystate, setLoadingoverlystate] = useState(false);
+//for logo and title in admin settings
+   const [logo, setLogo] = useState("https://www.reshot.com/preview-assets/icons/ZBSECWVM5Y/share-ZBSECWVM5Y.svg"); //for main organization logo
+   const [title, setTitle] = useState('Title'); //for main organization title
+   const [courses, setCourses] = useState([{ name: '', fee: '' }]); //courses offered with fee structure
   return (
     <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
                                 get_student_data,Input,setInput,filteredData,
@@ -156,7 +160,8 @@ const [dataurl,setdataUrl]=useState("");
                                 loadingoverlystate, setLoadingoverlystate,
                                 isAuthenticated, setIsAuthenticated,
                                 allStudetData,setAllStudentData,
-                                allStudetFetchedData
+                                allStudetFetchedData,
+                                logo, setLogo,title, setTitle,courses, setCourses
                                 
                               }}>
       {children}

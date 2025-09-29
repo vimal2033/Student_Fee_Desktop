@@ -1,12 +1,10 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import SideInfoCards from './SideInfoCards.jsx'
-import logo from '/images/icons/icon.svg';  // Import image
-import { tableHeaders } from '../global/GlobalFunctions.jsx';
+import { useMyContext } from '../global/MyContext.jsx';
 const SideNavBar = () => {
 
-  const imageUrl = new URL(logo, import.meta.url).href;
-
+  const {title,logo} = useMyContext();
   return (
     <>
      {/* <!-- side nevigation bar --> */}
@@ -14,8 +12,10 @@ const SideNavBar = () => {
         {/* <!-- main logo --> */}
         <div className="px-6 py-4 border-b border-gray-200 ">
           <span className="flex items-center">
-          <img src={imageUrl}  alt="Logo"className="h-8"/>
-          <h1 className="text-xl font-semibold text-gray-900 ml-2">{tableHeaders.Title}</h1>
+            
+          <img src={logo} alt="Logo" className="h-8" />
+
+          <h1 className="text-xl font-semibold text-gray-900 ml-2">{title}</h1>
           </span>
         </div>
         {/* <!-- side nevigation bar options --> */}
@@ -47,7 +47,7 @@ const SideNavBar = () => {
           <NavLink to="/search-student" exact="true" className={({ isActive }) => 
                 `flex items-center px-4 py-3 text-sm font-medium rounded-lg hover:bg-indigo-50 ${isActive ? 'text-custom bg-indigo-100' : 'text-gray-600'}`
               }>
-          <i className="fas fa-search mr-2"></i>
+          <i className="fas fa-search mr-5 "></i>
             Search Students
           </NavLink>
 
