@@ -1,0 +1,11 @@
+add student image
+edit student details
+profile image
+				admin info like
+					logo 
+					title
+					courses
+					university
+export data
+import data
+

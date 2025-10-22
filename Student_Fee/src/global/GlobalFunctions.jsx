@@ -43,28 +43,26 @@ export const setToday=()=>{
 
   
 //sending payment deta
-  export const submit_Payment = async (fee, date) => {
+  export const submit_Payment = async (fee, date,stuId,updatedFee) => {
 
     //sending payment details to backend
     const url = import.meta.env.VITE_API_STUDENTURL + "/createPaymentRecord";
     //for updating payment details in student profile
     const url2 = import.meta.env.VITE_API_STUDENTURL + "/updateStudentProfile/";
     //get auth token from local storage
-    const authToken = localStorage.getItem("authToken");
+    const authToken =  localStorage.getItem("authToken");
     if (!authToken) {
       console.error("Authentication error");
       return { data: null, status: "error" };
     }
-    const payload = {
-      AdminId: "687f88ecaa473bcbc6ec8cd4",
-      studentId: "687fad246a682ee6c5c25c80",
+    const payload = {              ///need to be fixed to send dynamic data
+      studentId: stuId,
       [tableHeaders.paymentFeeRecived]: fee,
       paymentMethod: "Online",
-      paymentStatus: "Completed",
       paymentDate: date
     };
       const payload2 = {
-            [tableHeaders.paymentFeeRecived]:fee
+           studentFeePaid:updatedFee
       }
     try {
       const response = await fetch(url, {
@@ -76,13 +74,13 @@ export const setToday=()=>{
         body: JSON.stringify(payload),
       });
       //----------- Update student profile with new payment details
-      const response2 = await fetch(url2+payload.studentId, {
+      const response2 = await fetch(url2+stuId, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "auth-token": authToken
         },
-        body: JSON.stringify(payload[tableHeaders.paymentFeeRecived]),
+        body: JSON.stringify(payload2),
       });
       //-----------
 

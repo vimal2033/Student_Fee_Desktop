@@ -12,7 +12,7 @@ import SearchStudent from './components/Page3_SearchStudent/SearchStudent.jsx';
 import Loadingoverlay from './components/LoadingScreen.jsx';
 import LoginSignup  from './components/Authantication_Page/login.jsx';
 import PrivateRoute from './global/PrivetRout.jsx';
-
+import AdminSettings from './components/AdminSettings.jsx';
 function App() {
   const { setDeshboardTitle, loadingoverlystate } = useMyContext();
 
@@ -50,6 +50,10 @@ function App() {
                       <Route
                         path="/search-student"
                         element={<SearchStudent setTitle={setDeshboardTitle} />}
+                      />
+                      <Route
+                        path="/AdminSettings"
+                        element={<AdminSettings setTitle={setDeshboardTitle} />}
                       />
                     </Routes>
                   </main>

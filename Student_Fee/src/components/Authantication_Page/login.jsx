@@ -29,8 +29,8 @@ export default function LoginSignup() {
   const handleSubmit = async () => {
     const url =
       mode === 'login'
-        ? 'http://localhost:3000/api/auth/login'
-        : 'http://localhost:3000/api/auth/createuser';
+        ? import.meta.env.VITE_API_AUTHURL + '/login'
+        : import.meta.env.VITE_API_AUTHURL + '/signup';
 
     const payload =
       mode === 'login'

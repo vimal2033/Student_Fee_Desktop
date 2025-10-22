@@ -15,7 +15,7 @@ export const MyProvider = ({ children }) => {
   const [StudentData,setStudentData]=useState([]);  //state for data of all the students
   const [allStudetData,setAllStudentData]=useState([]);  //copy for data of all the students if student data is filtered
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
-  const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
+  const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0,stuId:""});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
    //for current session //set current session according to current year by default
@@ -144,6 +144,11 @@ const [deshboardTitle, setDeshboardTitle] = useState("");
 const [dataurl,setdataUrl]=useState("");
 //for loading screen
  const [loadingoverlystate, setLoadingoverlystate] = useState(false);
+//for logo and title in admin settings
+   const [logo, setLogo] = useState("https://www.reshot.com/preview-assets/icons/ZBSECWVM5Y/share-ZBSECWVM5Y.svg"); //for main organization logo
+   const [title, setTitle] = useState('Title'); //for main organization title
+   const [courses, setCourses] = useState([{ name: '', fee: '' }]); //courses offered with fee structure
+   const [universities, setUniversities] = useState([]); //universities associated
   return (
     <MyContext.Provider value={{ StudentData,setStudentData,paymentData,setPaymentData,
                                 get_student_data,Input,setInput,filteredData,
@@ -156,8 +161,9 @@ const [dataurl,setdataUrl]=useState("");
                                 loadingoverlystate, setLoadingoverlystate,
                                 isAuthenticated, setIsAuthenticated,
                                 allStudetData,setAllStudentData,
-                                allStudetFetchedData
-                                
+                                allStudetFetchedData,
+                                logo, setLogo,title, setTitle,courses, setCourses
+                                ,universities, setUniversities
                               }}>
       {children}
     </MyContext.Provider>
