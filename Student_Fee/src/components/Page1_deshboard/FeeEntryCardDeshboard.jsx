@@ -30,7 +30,7 @@ const fillblank=()=>{
  const handleSubmitPayment = async () => {
     if (Input.Name.trim() !== "" && Input.Id.trim() !== "" && Input.Amount.trim()!=="") {
       // console.log(currentSession.url)
-      const responce=await submit_Payment( Input.Amount, Input.Date);
+      const responce=await submit_Payment( Input.Amount, Input.Date,Input.stuId,Number(Input.FeePaid)+Number(Input.Amount));
       if (responce.status === 200) {
         // Update student data after successful payment submission
         addAlert("Success! Your changes have been saved.", "bg-green-500");

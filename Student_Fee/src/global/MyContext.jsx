@@ -15,7 +15,7 @@ export const MyProvider = ({ children }) => {
   const [StudentData,setStudentData]=useState([]);  //state for data of all the students
   const [allStudetData,setAllStudentData]=useState([]);  //copy for data of all the students if student data is filtered
   const [paymentData,setPaymentData]=useState([]);  //state for data of all the payments
-  const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0});
+  const [Input,setInput]= useState({Id:"",ImgLink:profileImgUrl,Name:"",Date:setToday(),Amount:"",Course:"",Phone:"",University:"",TotalFee:0,FeePaid:0,Balance:0,stuId:""});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
    //for current session //set current session according to current year by default

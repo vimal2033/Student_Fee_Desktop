@@ -27,10 +27,5 @@ const PaymentSchema = new Schema({
         default: 'Cash',
         required: true
     },
-    paymentStatus: {
-        type: String,
-        enum: ['Completed', 'Pending', 'Failed'],
-        default: 'Pending'
-    }
 });
 module.exports = mongoose.model('PaymentDetails', PaymentSchema);

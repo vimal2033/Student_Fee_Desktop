@@ -24,8 +24,9 @@ router.post(
         }
   
         try {
-        const { studentName, studentphone, studentEmail, studentAddress, studentClass, studentRollNo, studentImage, studentFee,studentAdmmissionDate } = req.body;
-        const AdminId = await req.user.userId; // Get the admin ID from the authenticated user
+        // include studentImage and studentCourseDuration (if provided) and remove unnecessary await
+        const { studentName, studentphone, studentEmail, studentAddress, studentClass, studentRollNo, studentFee, studentAdmmissionDate, studentUniversity, studentImage, studentCourseDuration } = req.body;
+        const AdminId = req.user.userId; // Get the admin ID from the authenticated user
    
         const newStudentProfile = new StudentProfiles({
             AdminId,
@@ -34,9 +35,11 @@ router.post(
             studentEmail,
             studentAddress,
             studentClass,
+            studentUniversity,
             studentRollNo,
             studentImage,
             studentFee,
+            studentCourseDuration,
             studentAdmmissionDate
         });
     
@@ -48,8 +51,9 @@ router.post(
         }
     }
     );
-//Route to fetch all student profiles
-router.get("/getAllStudentProfiles", fetchuser, async (req, res) => {
+
+    //Route to fetch all student profiles
+    router.get("/getAllStudentProfiles", fetchuser, async (req, res) => {
     try {
         const studentProfiles = await StudentProfiles.find({ AdminId: req.user.userId });
         res.json(studentProfiles);
@@ -79,6 +83,10 @@ router.get("/getStudentProfile/:id", fetchuser, async (req, res) => {
 //Route to update a student profile
 router.put("/updateStudentProfile/:id", fetchuser, async (req, res) => {
     try {
+        if (Object.keys(req.body).length === 0) {
+            return res.status(400).send("No fields to update");
+        }
+
         // Find the profile first
         const studentProfile = await StudentProfiles.findById(req.params.id);
         if (!studentProfile) {
@@ -88,10 +96,30 @@ router.put("/updateStudentProfile/:id", fetchuser, async (req, res) => {
         if (studentProfile.AdminId.toString() !== req.user.userId) {
             return res.status(403).send("Access denied");
         }
-        // Only update fields present in req.body
-        Object.keys(req.body).forEach(key => {
-            studentProfile[key] = req.body[key];
+
+        // Only allow specific fields to be updated (prevent updating AdminId/_id)
+        const allowedFields = [
+            "studentName",
+            "studentphone",
+            "studentEmail",
+            "studentAddress",
+            "studentClass",
+            "studentRollNo",
+            "studentImage",
+            "studentFee",
+            "studentFeeStatus",
+            "studentAdmmissionDate",
+            "studentUniversity",
+            "studentCourseDuration",
+            "studentFeePaid"
+        ];
+
+        allowedFields.forEach(key => {
+            if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+                studentProfile[key] = req.body[key];
+            }
         });
+
         const updatedProfile = await studentProfile.save();
         res.json(updatedProfile);
     } catch (error) {
@@ -133,16 +161,15 @@ router.post(
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-
         try {
-            const { studentId, paymentAmount, paymentMethod } = req.body;
+            const { studentId, paymentAmount, paymentMethod,paymentDate } = req.body;
             const AdminId = req.user.userId; // Get the admin ID from the authenticated user
-
             const newPaymentRecord = new PaymentDetails({
                 AdminId,
                 studentId,
                 paymentAmount,
-                paymentMethod
+                paymentMethod,
+                paymentDate
             });
 
             const savedPaymentRecord = await newPaymentRecord.save();

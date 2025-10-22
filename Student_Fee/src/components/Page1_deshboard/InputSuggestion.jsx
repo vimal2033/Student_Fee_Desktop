@@ -57,8 +57,9 @@ const autofill=(index)=>{
                                            University: filteredData[index][tableHeaders.headerUniversity],
                                            TotalFee: filteredData[index][tableHeaders.headerTotalFee],
                                            FeePaid: filteredData[index][tableHeaders.headerFeePaid],
-                                          Balance:Number(filteredData[index][tableHeaders.headerTotalFee])-Number(filteredData[index][tableHeaders.headerFeePaid])
-                                          }));
+                                          Balance:Number(filteredData[index][tableHeaders.headerTotalFee])-Number(filteredData[index][tableHeaders.headerFeePaid]),
+                                          stuId: filteredData[index]._id
+                                        }));
                                           
    }}
    useEffect(() => {
