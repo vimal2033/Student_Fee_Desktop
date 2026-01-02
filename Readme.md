@@ -13,6 +13,7 @@ The **Student Fee Management System** is a **full-stack application** designed t
 Built with **React (Vite)** for a fast, responsive frontend and **Express.js** for a secure backend, it connects to a **MongoDB database** for storing student data.  
 
 The project also features **Electron integration**, allowing it to run as a **cross-platform desktop app**, enabling offline-friendly operations in addition to web access.  
+Live Demo: Access the deployed static frontend at https://d3h9b9x8gvaf8b.cloudfront.net/.
 
 > ⚠ **Note:** This project is currently in the development phase. Some features may be incomplete or buggy.
 
